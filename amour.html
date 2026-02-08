@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Para Fernanda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Pacifico&family=Indie+Flower&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        :root {
+            --color-rojo: #e63946;
+            --color-rosa: #ffafcc;
+            --color-rosa-oscuro: #fb6f92;
+            --color-morado: #7209b7;
+            --color-blanco: #fff;
+            --color-papel: #f4e4bc;
+            --color-texto-carta: #4a3b2a;
+        }
+
+        body {
+            font-family: 'Fredoka One', cursive;
+            background: linear-gradient(135deg, var(--color-rosa) 0%, var(--color-morado) 100%);
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: var(--color-morado);
+            touch-action: none;
+        }
+
+        /* --- DECORACIONES FLOTANTES (Dentro de la caja) --- */
+        .flower {
+            position: absolute; 
+            font-size: 1.8rem; 
+            animation: float 5s ease-in-out infinite; 
+            z-index: 1; 
+            pointer-events: none; 
+            opacity: 0.8; 
+        }
+
+        /* --- EL SOBRE --- */
+        #envelope-container {
+            position: relative;
+            z-index: 20;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        #envelope-container:hover { transform: scale(1.05); }
+
+        .envelope-container-opening {
+            animation: joyfulOpen 1s forwards ease-in-out;
+            pointer-events: none;
+        }
+
+        .envelope {
+            width: 300px; height: 200px;
+            background-color: var(--color-rojo);
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            display: flex; justify-content: center; align-items: center;
+        }
+        .envelope::after {
+            content: ''; position: absolute; top: 0; left: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #ff4d6d;
+            z-index: 1;
+        }
+        .letter-text {
+            background: white; padding: 10px 20px; border-radius: 5px;
+            z-index: 2; font-family: 'Pacifico', cursive; font-size: 1.2rem;
+            color: var(--color-rojo);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* --- CARTA ANTIGUA (POEMA) --- */
+        #poem-screen {
+            display: none;
+            position: absolute;
+            z-index: 30;
+            width: 90%;
+            max-width: 450px;
+            cursor: pointer;
+        }
+
+        .paper-sheet {
+            background-color: var(--color-papel);
+            background-image: linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px);
+            background-size: 100% 1.8em; 
+            padding: 30px;
+            border: 1px solid #d3c4a3;
+            border-radius: 2px 10px 2px 15px;
+            box-shadow: 10px 15px 30px rgba(0,0,0,0.4);
+            transform: rotate(-1deg);
+            color: var(--color-texto-carta);
+            text-align: center;
+            position: relative;
+        }
+
+        .paper-sheet::before {
+            content: ''; position: absolute; top: -12px; left: 50%;
+            width: 80px; height: 25px; background: rgba(255, 255, 255, 0.5);
+            transform: translateX(-50%) rotate(1deg); box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .poem-title {
+            font-family: 'Fredoka One', cursive; font-size: 1.8rem;
+            margin-bottom: 20px; color: #704018;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+        }
+
+        .poem-body {
+            font-family: 'Indie Flower', cursive; font-size: 1.6rem;
+            line-height: 1.4; margin-bottom: 20px; font-weight: 600;
+        }
+
+        .click-hint {
+            font-family: 'Fredoka One', sans-serif; font-size: 0.9rem;
+            opacity: 0.7; margin-top: 20px; color: #8b5e3c;
+        }
+
+        .page-turn-exit { transform-origin: left center; animation: turnPage 0.8s forwards ease-in-out; }
+
+        /* --- CONTENEDOR DEL JUEGO --- */
+        #game-wrapper {
+            position: relative; z-index: 10; display: none;
+            animation: fadeIn 1s ease;
+            width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        #game-container {
+            display: none; 
+            flex-direction: column; align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            
+            /* TAMAÑO Y FORMATO */
+            width: 95%; 
+            max-width: 520px;
+            max-height: 95vh;
+            
+            overflow-y: auto; overflow-x: hidden;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 { 
+            color: var(--color-rojo); margin: 5px 0 10px 0; font-size: 1.5rem; text-align: center; z-index: 5; position: relative;
+        }
+
+        /* Ajuste para 13x13: 
+           Cambiamos repeat(11) a repeat(13).
+        */
+        .word-search-grid {
+            display: grid; 
+            grid-template-columns: repeat(13, 1fr); /* ¡AHORA SON 13 COLUMNAS! */
+            gap: 1px; /* Gap reducido para que quepan */
+            margin-bottom: 15px; user-select: none;
+            background: var(--color-rosa); padding: 4px; border-radius: 10px;
+            touch-action: none;
+            z-index: 5; position: relative;
+        }
+
+        .cell {
+            /* Celdas un poquito más pequeñas para compensar las 13 columnas */
+            width: 22px; height: 22px; 
+            background: white;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; font-size: 10px; border-radius: 2px;
+        }
+        .cell.selected { background: var(--color-rosa-oscuro); color: white; }
+        .cell.found { background: var(--color-morado); color: white; animation: pop 0.3s ease; }
+
+        #word-list { 
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; max-width: 100%; 
+            z-index: 5; position: relative;
+        }
+        .word-item { font-size: 0.8rem; padding: 4px 8px; background: #eee; border-radius: 12px; transition: all 0.3s; }
+        .word-item.done { background: var(--color-rojo); color: white; text-decoration: line-through; opacity: 0.6; }
+
+        #unlock-btn-container { margin-top: 15px; height: 50px; z-index: 5; position: relative; }
+        #final-heart-btn {
+            background: #ccc; color: white; border: none; border-radius: 50%;
+            width: 50px; height: 50px; font-size: 24px;
+            cursor: not-allowed; transition: all 0.5s ease;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        #final-heart-btn.unlocked { background: var(--color-rojo); cursor: pointer; animation: heartBeat 1.2s infinite; }
+        #final-heart-btn.revealed { width: auto; padding: 10px 30px; border-radius: 30px; background: var(--color-morado); animation: none; font-size: 1.2rem; }
+
+        /* Lirio Secreto - ADENTRO DEL JUEGO */
+        #secret-lily {
+            position: absolute; bottom: 10px; left: 10px; font-size: 2.2rem;
+            cursor: pointer; z-index: 50; filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.6));
+            transition: transform 0.2s; pointer-events: auto; animation: float 6s ease-in-out infinite;
+        }
+        #secret-lily:hover { transform: scale(1.3) !important; animation: none; }
+
+        /* Modal Final */
+        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 100; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 25px; border-radius: 20px; text-align: center; max-width: 85%; animation: slideUp 0.8s ease; border: 5px solid var(--color-rojo); }
+        .phrase-reveal { font-size: 1.2rem; color: var(--color-morado); margin-bottom: 20px; }
+        .highlight-phrase { color: var(--color-rojo); font-family: 'Pacifico', cursive; font-size: 1.5rem; display: block; margin: 15px 0; }
+        .cat-img { width: 180px; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 20px; }
+        .buttons { display: flex; gap: 15px; justify-content: center; }
+        button { padding: 10px 25px; font-family: 'Fredoka One', cursive; font-size: 1.1rem; border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s; }
+        #btn-yes { background-color: var(--color-rojo); color: white; }
+        #btn-no { background-color: #ccc; color: #333; }
+
+        /* Animaciones */
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes heartBeat { 0% { transform: scale(1); } 14% { transform: scale(1.3); } 28% { transform: scale(1); } 42% { transform: scale(1.3); } 70% { transform: scale(1); } }
+        @keyframes float { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-8px) rotate(5deg); } 100% { transform: translateY(0px) rotate(0deg); } }
+        @keyframes joyfulOpen {
+            0% { transform: scale(1); opacity: 1; }
+            20% { transform: scale(1.1) rotate(-3deg); }
+            40% { transform: scale(1.1) rotate(3deg); }
+            60% { transform: scale(1.2) rotate(0deg); opacity: 0.8; }
+            100% { transform: scale(1.5) translateY(-200px); opacity: 0; }
+        }
+        @keyframes turnPage {
+            0% { transform: rotate(0deg) translateX(0); opacity: 1; }
+            50% { transform: rotateY(-90deg) translateX(-50px); opacity: 0.8; }
+            100% { transform: rotateY(-180deg) translateX(-100px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="https://cdn.pixabay.com/audio/2022/10/05/audio_68629e8c58.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="magic-sound">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="yay-sound">
+        <source src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="envelope-container" onclick="openEnvelope()">
+        <div class="envelope">
+            <div class="letter-text">
+                De: Alexander<br>
+                Para: Fernanda ❤️
+            </div>
+        </div>
+        <p style="margin-top: 220px; color: white; font-size: 1.2rem;">¡Toca para abrir la carta! ✨</p>
+    </div>
+
+    <div id="poem-screen" onclick="finishPoem()">
+        <div class="paper-sheet">
+            <div class="poem-title">SUEÑOS</div>
+            <div class="poem-body">
+                Mis sueños se resumen<br>
+                en ser solo tú y yo,<br>
+                siendo felices<br>
+                y disfrutando por lo que luchamos...<br>
+                <br>
+                <span style="color: #b54a4a;">Por esa vida que juntos deseamos.</span>
+            </div>
+            <div class="click-hint">(Toca la carta para continuar...)</div>
+        </div>
+    </div>
+
+    <div id="game-wrapper" style="display:none;">
+        
+        <div id="game-container">
+            
+            <div class="flower" style="top: 10px; left: 10px;">🌹</div>
+            <div class="flower" style="top: 10px; right: 10px; animation-delay: 1s;">🌷</div>
+            
+            <div class="flower" style="top: 30%; left: 5px; animation-delay: 0.5s;">🌺</div>
+            <div class="flower" style="top: 30%; right: 5px; animation-delay: 1.5s;">💐</div>
+            
+            <div class="flower" style="top: 50%; left: 15px; animation-delay: 0.2s;">💖</div>
+            <div class="flower" style="top: 50%; right: 15px; animation-delay: 1.2s;">💘</div>
+            
+            <div class="flower" style="bottom: 80px; left: 10px; animation-delay: 2.5s;">🌸</div>
+            <div class="flower" style="bottom: 80px; right: 10px; animation-delay: 0.7s;">🌼</div>
+            <div class="flower" style="bottom: 20px; right: 20px; animation-delay: 0.8s;">❤️</div>
+
+            <div class="flower" style="top: 15%; right: 25%; animation-delay: 3s; opacity: 0.5;">✨</div>
+            <div class="flower" style="top: 15%; left: 25%; animation-delay: 2s; opacity: 0.5;">✨</div>
+            <div class="flower" style="bottom: 120px; left: -5px; animation-delay: 1.8s;">💌</div>
+            <div class="flower" style="bottom: 120px; right: -5px; animation-delay: 3s;">🎁</div>
+            
+            <div class="flower" style="bottom: 20px; left: 60px; animation-delay: 0.3s; font-size: 1.5rem;">🍃</div>
+            <div class="flower" style="bottom: 50px; left: 10px; animation-delay: 1.2s; font-size: 1.8rem;">🌸</div>
+
+            <div id="secret-lily" onclick="secretWin()" title="Lirio de la suerte">🏵️</div>
+
+            <h1>Encuentra las palabras</h1>
+            <div class="word-search-grid" id="grid"></div>
+            <div id="word-list"></div>
+            <div id="unlock-btn-container">
+                <button id="final-heart-btn" onclick="revealLastWord()">❓</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal">
+        <div class="modal-content">
+            <img id="cat-image" src="https://media.giphy.com/media/CjmvTCZf2U3p09Cn0h/giphy.gif" alt="Esperando..." class="cat-img">
+            <div id="message-area">
+                <p>El mensaje secreto es:</p>
+                <div class="phrase-reveal">
+                    VEUX TU ETRE MON VALENTIN
+                    <span class="highlight-phrase">¿Quieres ser mi San Valentín?</span>
+                </div>
+                <div class="buttons">
+                    <button id="btn-yes" onclick="sheSaidYes()">¡SÍ!</button>
+                    <button id="btn-no" onclick="sheSaidNo()">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ¡NUEVAS PALABRAS AGREGADAS!
+        const searchWords = ["VEUX", "TU", "ETRE", "MON", "AMOUR", "COEUR", "CADEAU", "FLEURS", "FEVRIER", "DINER", "ETERNITE", "NOBLESSE"];
+        const finalSecretWord = "VALENTIN";
+        const gridSize = 13; // ¡CUADRÍCULA AUMENTADA A 13x13!
+        let grid = [];
+        let foundWords = [];
+        let isSelecting = false;
+        let selectionStart = null;
+        let selectedCells = [];
+
+        // --- CONTROL DE AUDIO ---
+        const bgMusic = document.getElementById('bg-music');
+        const magicSound = document.getElementById('magic-sound');
+        const yaySound = document.getElementById('yay-sound');
+        
+        bgMusic.volume = 0.3; 
+        magicSound.volume = 0.5;
+        yaySound.volume = 0.6;
+
+        function openEnvelope() {
+            bgMusic.play().catch(e => console.log("Audio autoplay bloqueado hasta interacción"));
+            const envelopeContainer = document.getElementById('envelope-container');
+            envelopeContainer.classList.add('envelope-container-opening');
+            confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 } });
+            
+            setTimeout(() => {
+                envelopeContainer.style.display = 'none';
+                document.getElementById('poem-screen').style.display = 'block';
+            }, 1000);
+        }
+
+        function finishPoem() {
+            const poemScreen = document.getElementById('poem-screen');
+            poemScreen.classList.add('page-turn-exit');
+            setTimeout(() => {
+                poemScreen.style.display = 'none';
+                document.getElementById('game-wrapper').style.display = 'flex'; 
+                document.getElementById('game-container').style.display = 'flex';
+                initGame();
+            }, 800);
+        }
+
+        function initGame() {
+            createGrid();
+            placeWords();
+            fillEmptySpaces();
+            renderGrid();
+            renderWordList();
+            const gridElement = document.getElementById('grid');
+            gridElement.addEventListener('touchmove', function(e) {
+                e.preventDefault(); 
+                updateSelection(e);
+            }, { passive: false });
+            gridElement.addEventListener('touchend', function(e) {
+                endSelection();
+            });
+        }
+
+        function createGrid() {
+            for (let i = 0; i < gridSize; i++) {
+                grid[i] = new Array(gridSize).fill('');
+            }
+        }
+
+        function placeWords() {
+            searchWords.forEach(word => {
+                let placed = false;
+                while (!placed) {
+                    const direction = Math.floor(Math.random() * 3);
+                    const row = Math.floor(Math.random() * gridSize);
+                    const col = Math.floor(Math.random() * gridSize);
+                    if (canPlaceWord(word, row, col, direction)) {
+                        insertWord(word, row, col, direction);
+                        placed = true;
+                    }
+                }
+            });
+        }
+
+        function canPlaceWord(word, row, col, dir) {
+            if (dir === 0 && col + word.length > gridSize) return false;
+            if (dir === 1 && row + word.length > gridSize) return false;
+            if (dir === 2 && (row + word.length > gridSize || col + word.length > gridSize)) return false;
+            for (let i = 0; i < word.length; i++) {
+                let r = row + (dir === 1 || dir === 2 ? i : 0);
+                let c = col + (dir === 0 || dir === 2 ? i : 0);
+                if (grid[r][c] !== '' && grid[r][c] !== word[i]) return false;
+            }
+            return true;
+        }
+
+        function insertWord(word, row, col, dir) {
+            for (let i = 0; i < word.length; i++) {
+                let r = row + (dir === 1 || dir === 2 ? i : 0);
+                let c = col + (dir === 0 || dir === 2 ? i : 0);
+                grid[r][c] = word[i];
+            }
+        }
+
+        function fillEmptySpaces() {
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            for (let r = 0; r < gridSize; r++) {
+                for (let c = 0; c < gridSize; c++) {
+                    if (grid[r][c] === '') {
+                        grid[r][c] = letters.charAt(Math.floor(Math.random() * letters.length));
+                    }
+                }
+            }
+        }
+
+        function renderGrid() {
+            const container = document.getElementById('grid');
+            container.innerHTML = '';
+            for (let r = 0; r < gridSize; r++) {
+                for (let c = 0; c < gridSize; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.innerText = grid[r][c];
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+                    cell.addEventListener('mousedown', startSelection);
+                    cell.addEventListener('mouseover', updateSelection);
+                    cell.addEventListener('mouseup', endSelection);
+                    cell.addEventListener('touchstart', (e) => { 
+                        if(e.cancelable) e.preventDefault(); 
+                        startSelection(e); 
+                    }, { passive: false });
+                    container.appendChild(cell);
+                }
+            }
+            document.body.addEventListener('mouseup', () => { if(isSelecting) endSelection(); });
+        }
+
+        function renderWordList() {
+            const list = document.getElementById('word-list');
+            list.innerHTML = '';
+            let displayWords = [...searchWords];
+            displayWords.sort(() => Math.random() - 0.5);
+            displayWords.forEach(word => {
+                const item = document.createElement('div');
+                item.className = 'word-item';
+                item.id = 'word-' + word;
+                item.innerText = word;
+                list.appendChild(item);
+            });
+        }
+
+        function startSelection(e) {
+            isSelecting = true;
+            const target = e.target.closest('.cell');
+            if(!target) return;
+            selectionStart = { r: parseInt(target.dataset.row), c: parseInt(target.dataset.col) };
+            updateSelection(e);
+        }
+
+        function updateSelection(e) {
+            if (!isSelecting) return;
+            let target;
+            if(e.type === 'touchmove' || e.type === 'touchstart') {
+                const touch = e.touches[0];
+                target = document.elementFromPoint(touch.clientX, touch.clientY);
+            } else {
+                target = e.target;
+            }
+            if (!target || !target.classList.contains('cell')) return;
+            const currentR = parseInt(target.dataset.row);
+            const currentC = parseInt(target.dataset.col);
+            clearVisualSelection();
+            selectedCells = getCellsBetween(selectionStart, {r: currentR, c: currentC});
+            selectedCells.forEach(pos => {
+                const cell = document.querySelector(`.cell[data-row='${pos.r}'][data-col='${pos.c}']`);
+                if(cell) cell.classList.add('selected');
+            });
+        }
+
+        function endSelection() {
+            isSelecting = false;
+            const word = selectedCells.map(pos => grid[pos.r][pos.c]).join('');
+            const reversedWord = word.split('').reverse().join('');
+            if (searchWords.includes(word) && !foundWords.includes(word)) {
+                markFound(word);
+            } else if (searchWords.includes(reversedWord) && !foundWords.includes(reversedWord)) {
+                markFound(reversedWord);
+            }
+            clearVisualSelection();
+        }
+
+        function getCellsBetween(start, end) {
+            let cells = [];
+            const dr = end.r - start.r;
+            const dc = end.c - start.c;
+            if (dr === 0 || dc === 0 || Math.abs(dr) === Math.abs(dc)) {
+                const steps = Math.max(Math.abs(dr), Math.abs(dc));
+                const stepR = dr === 0 ? 0 : dr / steps;
+                const stepC = dc === 0 ? 0 : dc / steps;
+                for (let i = 0; i <= steps; i++) {
+                    cells.push({ r: start.r + i * stepR, c: start.c + i * stepC });
+                }
+            }
+            return cells;
+        }
+
+        function clearVisualSelection() {
+            document.querySelectorAll('.cell.selected').forEach(c => c.classList.remove('selected'));
+        }
+
+        function markFound(word) {
+            foundWords.push(word);
+            document.getElementById('word-' + word).classList.add('done');
+            selectedCells.forEach(pos => {
+                const cell = document.querySelector(`.cell[data-row='${pos.r}'][data-col='${pos.c}']`);
+                cell.classList.add('found');
+            });
+            checkPreWin();
+        }
+
+        function checkPreWin() {
+            if (foundWords.length === searchWords.length) {
+                unlockHeartButton();
+            }
+        }
+
+        function unlockHeartButton() {
+            const btn = document.getElementById('final-heart-btn');
+            btn.classList.add('unlocked');
+            btn.innerHTML = "❤️";
+            magicSound.play();
+            confetti({ particleCount: 50, spread: 50, origin: { y: 0.8 } });
+        }
+
+        function revealLastWord() {
+            const btn = document.getElementById('final-heart-btn');
+            if (!btn.classList.contains('unlocked')) return;
+
+            btn.classList.add('revealed');
+            btn.innerHTML = finalSecretWord;
+            setTimeout(() => { showFinalModal(); }, 1500);
+        }
+
+        function secretWin() {
+            searchWords.forEach(word => {
+                if(!foundWords.includes(word)) {
+                    document.getElementById('word-' + word).classList.add('done');
+                    foundWords.push(word);
+                }
+            });
+            unlockHeartButton();
+        }
+
+        function showFinalModal() {
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function sheSaidYes() {
+            const img = document.getElementById('cat-image');
+            img.src = "https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif"; 
+            document.querySelector('.phrase-reveal').innerHTML = "¡SABÍA QUE DIRÍAS QUE SÍ! <br> JE T'AIME ❤️";
+            document.querySelector('.buttons').innerHTML = ""; 
+            yaySound.play(); 
+            launchConfetti();
+            setInterval(launchConfetti, 2000);
+        }
+
+        function sheSaidNo() {
+            const img = document.getElementById('cat-image');
+            const btnNo = document.getElementById('btn-no');
+            const btnYes = document.getElementById('btn-yes');
+            img.src = "https://media.giphy.com/media/OPU6wzx8JrHna/giphy.gif";
+            document.querySelector('.phrase-reveal').innerHTML = "¿Segura? 🥺";
+            btnYes.style.transform = "scale(1.3)";
+            btnYes.style.boxShadow = "0 0 20px var(--color-rojo)";
+            btnYes.innerText = "¡SÍ CLARO QUE SÍ!";
+            btnNo.innerText = "Pensándolo bien...";
+            btnNo.onclick = sheSaidYes;
+        }
+
+        function launchConfetti() {
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#e63946', '#ffafcc', '#7209b7']
+            });
+        }
+    </script>
+</body>
+</html>
