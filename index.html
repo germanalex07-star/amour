@@ -95,8 +95,8 @@
             color: #ff0055;
             text-shadow: 0 0 5px #ff0055, 0 0 10px #7a0029;
             white-space: nowrap;
-            /* Texto ultra lento de 50 segundos */
-            animation: scrollText 50s linear infinite;
+            /* Texto modificado para ir EL DOBLE de lento (100 segundos) */
+            animation: scrollText 100s linear infinite;
         }
 
         @keyframes scrollText {
@@ -139,11 +139,11 @@
                     setTimeout(() => {
                         fase2.style.display = 'none';
                         
-                        // PANTALLA NEGRA REDUCIDA A 1 SEGUNDO (1000 ms)
+                        // Pantalla negra cortada a 0.3 segundos (300 ms)
                         setTimeout(() => {
                             fase3.style.display = 'flex';
                             setTimeout(() => { fase3.style.opacity = '1'; }, 50);
-                        }, 1000); 
+                        }, 300); 
                         
                     }, 400); 
                 }, 2500); 
