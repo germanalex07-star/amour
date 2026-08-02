@@ -61,7 +61,7 @@
             border: 3px solid white;
             border-radius: 8px;
             position: relative;
-            animation: girarCelular 0.2s ease-in-out infinite;
+            animation: girarCelular 2s ease-in-out infinite;
         }
 
         .celular-css::before {
@@ -95,8 +95,8 @@
             color: #ff0055;
             text-shadow: 0 0 5px #ff0055, 0 0 10px #7a0029;
             white-space: nowrap;
-            /* Texto modificado para ir EL DOBLE de lento (100 segundos) */
-            animation: scrollText 60s linear infinite;
+            /* Velocidad ajustada a 65 segundos */
+            animation: scrollText 65s linear infinite;
         }
 
         @keyframes scrollText {
@@ -139,11 +139,9 @@
                     setTimeout(() => {
                         fase2.style.display = 'none';
                         
-                        // Pantalla negra cortada a 0.3 segundos (300 ms)
-                        setTimeout(() => {
-                            fase3.style.display = 'flex';
-                            setTimeout(() => { fase3.style.opacity = '1'; }, 50);
-                        }, 300); 
+                        // Aparece de inmediato, sin pantalla negra
+                        fase3.style.display = 'flex';
+                        setTimeout(() => { fase3.style.opacity = '1'; }, 50);
                         
                     }, 400); 
                 }, 2500); 
