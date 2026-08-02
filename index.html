@@ -29,7 +29,6 @@
             text-align: center;
             width: 100%;
             height: 100%;
-            /* Transición más rápida y fluida (0.2 segundos) */
             transition: opacity 0.2s ease;
             padding: 0 20px;
             box-sizing: border-box;
@@ -96,7 +95,7 @@
             color: #ff0055;
             text-shadow: 0 0 5px #ff0055, 0 0 10px #7a0029;
             white-space: nowrap;
-            /* Velocidad LED en 45 segundos como querías */
+            /* Velocidad LED perfecta en 45 segundos */
             animation: scrollText 45s linear infinite;
         }
 
@@ -135,18 +134,18 @@
                 fase2.style.display = 'flex';
                 setTimeout(() => { fase2.style.opacity = '1'; }, 20);
                 
-                // El celular dura exactamente 1 segundo en pantalla y salta de una
+                // El celular ahora dura 3 segundos en pantalla (se le devolvieron los 2s)
                 setTimeout(() => {
                     fase2.style.opacity = '0';
                     setTimeout(() => {
                         fase2.style.display = 'none';
                         
-                        // Aparece el mensaje LED de inmediato
+                        // Transición ultrarrápida (50ms) para que el LED entre de inmediato
                         fase3.style.display = 'flex';
-                        setTimeout(() => { fase3.style.opacity = '1'; }, 20);
+                        setTimeout(() => { fase3.style.opacity = '1'; }, 10);
                         
-                    }, 200); // Transición de salida rápida
-                }, 1000); // 1 segundo de celular
+                    }, 50); // Pausa casi nula entre mensajes
+                }, 3000); // 3000ms = 3 segundos de celular girando
             }, 200); 
         }, 2500); 
     </script>
