@@ -3,234 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para mi mamá</title>
+    <title>Mensaje Especial</title>
     <style>
-        :root {
-            --color-sobre-atras: #ff85a2;
-            --color-sobre-frente: #ff7396;
-            --color-sobre-lados: #ff9db6;
-            --color-solapa: #ff5c8d;
-            --color-papel: #ffffff;
-            --color-fondo: #fff0f5;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
 
         body {
-            background-color: var(--color-fondo);
+            margin: 0;
+            padding: 0;
+            background-color: #050505;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            font-family: 'Georgia', serif;
-            overflow: hidden;
         }
 
-        /* Contenedor de toda la magia */
-        .escena {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-        }
-
-        .ramo {
-            font-size: 70px;
-            margin-right: 20px;
-            filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.15));
-            transition: opacity 0.8s ease; 
-        }
-
-        /* Contenedor solo del sobre */
-        .contenedor-sobre {
-            position: relative;
-            width: 280px;
-            height: 200px;
-            cursor: pointer;
-        }
-
-        /* Piezas del sobre que van a desaparecer */
-        .pieza-sobre {
-            transition: opacity 0.8s ease;
-        }
-
-        .sobre-atras {
+        .pantalla {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: var(--color-sobre-atras);
-            border-radius: 5px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
-
-        .sobre-frente {
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 0; height: 0;
-            border-left: 140px solid var(--color-sobre-lados); 
-            border-right: 140px solid var(--color-sobre-lados); 
-            border-bottom: 110px solid var(--color-sobre-frente); 
-            border-top: 90px solid transparent; 
-            z-index: 3;
-            border-radius: 0 0 5px 5px;
-            pointer-events: none;
-        }
-
-        .solapa {
-            position: absolute;
-            top: 0; left: 0;
-            width: 0; height: 0;
-            border-left: 140px solid transparent;
-            border-right: 140px solid transparent;
-            border-top: 110px solid var(--color-solapa);
-            transform-origin: top;
-            transition: transform 0.6s ease-in-out, opacity 0.8s ease;
-            z-index: 5; /* Encima de todo */
-        }
-
-        .solapa.abierta {
-            transform: rotateX(180deg);
-            z-index: 1;
-        }
-
-        /* LA CARTA */
-        .carta {
-            position: absolute;
-            bottom: 15px;
-            left: 15px;
-            width: 250px;
-            height: 170px;
-            background: var(--color-papel);
-            padding: 20px;
-            box-sizing: border-box;
-            border-radius: 8px;
-            z-index: 2; 
-            transition: transform 0.8s ease-in-out, height 0.8s ease-in-out;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            overflow: hidden;
             display: flex;
             flex-direction: column;
-        }
-
-        /* Estilo para la fecha clásica */
-        .carta .fecha {
-            text-align: right;
-            font-size: 11px;
-            color: #777;
-            margin: 0 0 10px 0;
-            font-style: italic;
-        }
-
-        .carta h2 { font-size: 16px; color: #d81b60; margin: 0 0 10px 0; text-align: center; }
-        .carta p { font-size: 13px; line-height: 1.5; color: #444; margin: 0 0 10px 0; text-align: justify; }
-
-        .carta.afuera {
-            transform: translateY(-220px); 
-            z-index: 6; /* Pasa al frente de todo, incluyendo la solapa */
-            height: 250px;
-        }
-
-        .carta.centrada {
-            transform: translateY(-20px) scale(1.15); 
-            height: 300px; 
-            overflow-y: auto; 
-        }
-
-        .carta::-webkit-scrollbar { width: 5px; }
-        .carta::-webkit-scrollbar-thumb { background: #ff9db6; border-radius: 10px; }
-
-        /* LOS CHOCOLATES */
-        .chocolates {
-            position: absolute;
-            font-size: 60px;
-            opacity: 0;
-            transform: translateY(50px) scale(0.5); 
-            transition: all 1s ease-in-out;
-            z-index: 10;
-            bottom: 10%; 
-            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
-        }
-
-        .chocolates.visibles {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        .instruccion {
-            position: absolute;
-            bottom: -50px;
-            width: 100%;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            color: #d81b60;
-            font-weight: bold;
-            animation: latido 1.5s infinite;
-            transition: opacity 0.5s;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.4s ease;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
 
-        @keyframes latido {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        #fase1 {
+            opacity: 1;
+        }
+
+        #fase1 p {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        #fase2 {
+            display: none; 
+            opacity: 0;
+        }
+
+        #fase2 p {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff0055;
+            margin-top: 20px;
+        }
+
+        .celular-css {
+            width: 45px;
+            height: 85px;
+            border: 3px solid white;
+            border-radius: 8px;
+            position: relative;
+            animation: girarCelular 2s ease-in-out infinite;
+        }
+
+        .celular-css::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 3px;
+            background-color: white;
+            border-radius: 2px;
+        }
+
+        @keyframes girarCelular {
+            0%, 20% { transform: rotate(0deg); }
+            80%, 100% { transform: rotate(90deg); }
+        }
+
+        #fase3 {
+            display: none; 
+            opacity: 0;
+            transform: rotate(90deg);
+            width: 100vh; 
+            height: 100vw;
+        }
+
+        .led-text {
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 15vh; 
+            color: #ff0055;
+            text-shadow: 0 0 5px #ff0055, 0 0 10px #7a0029;
+            white-space: nowrap;
+            animation: scrollText 22s linear infinite;
+        }
+
+        @keyframes scrollText {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-150%); }
         }
     </style>
 </head>
 <body>
 
-    <div class="escena">
-        <div class="ramo" id="ramo">💐</div>
+    <div id="fase1" class="pantalla">
+        <p>Sé que han sido unos meses difíciles, pero...</p>
+    </div>
 
-        <div class="contenedor-sobre" onclick="iniciarMagia()">
-            <div class="pieza-sobre sobre-atras" id="sobre-atras"></div>
-            
-            <div class="carta" id="carta">
-                <p class="fecha">8 de marzo de 2026</p>
-                <h2>Para mi maravillosa madre ❤️</h2>
-                <p>Hoy quiero celebrar a la gran mujer que has sido a lo largo de todos estos años. Admiro profundamente tu esfuerzo inalcanzable y esa fuerza tuya tan especial.</p>
-                <p>Me llena de orgullo ver cómo siempre te has esforzado por salir adelante tú sola, enfrentando la vida con valentía y sin rendirte jamás. Eres un verdadero ejemplo de valentía para todas las mujeres y mi mayor orgullo.</p>
-                <p>Gracias por todo tu amor incondicional y por enseñarme a ser fuerte.</p>
-                <p style="text-align: center; font-weight: bold; color: #d81b60; margin-top: 10px;">¡Te amo muchísimo, mamá!</p>
-            </div>
-            
-            <div class="pieza-sobre sobre-frente" id="sobre-frente"></div>
-            
-            <div class="pieza-sobre solapa" id="solapa"></div>
-            
-            <div class="instruccion" id="instruccion">¡Toca el sobre, mamá!</div>
+    <div id="fase2" class="pantalla">
+        <div class="celular-css"></div>
+        <p>Gira tu celular</p>
+    </div>
+
+    <div id="fase3" class="pantalla">
+        <div class="led-text">
+            ❤️ Pasaba por aquí para Recordarte que eres una gran persona y que vas a cumplir todos tus sueños y metas. Te quiero mucho 🥰
         </div>
-
-        <div class="chocolates" id="chocolates">🍫 🍬 🍫</div>
     </div>
 
     <script>
-        let animacionEnCurso = false;
+        const fase1 = document.getElementById('fase1');
+        const fase2 = document.getElementById('fase2');
+        const fase3 = document.getElementById('fase3');
 
-        function iniciarMagia() {
-            if (animacionEnCurso) return;
-            animacionEnCurso = true;
-
-            // Paso 1: Abrir solapa y ocultar instrucción
-            document.getElementById('instruccion').style.opacity = '0';
-            document.getElementById('solapa').classList.add('abierta');
-
-            // Paso 2: Sacar la carta
-            setTimeout(function() {
-                document.getElementById('carta').classList.add('afuera');
-            }, 600);
-
-            // Paso 3: Desaparecer el sobre y centrar la carta
-            setTimeout(function() {
-                document.getElementById('sobre-atras').style.opacity = '0';
-                document.getElementById('sobre-frente').style.opacity = '0';
-                document.getElementById('solapa').style.opacity = '0';
-                document.getElementById('ramo').style.opacity = '0';
+        setTimeout(() => {
+            fase1.style.opacity = '0';
+            setTimeout(() => {
+                fase1.style.display = 'none';
+                fase2.style.display = 'flex';
+                setTimeout(() => { fase2.style.opacity = '1'; }, 50);
                 
-                document.getElementById('carta').classList.remove('afuera');
-                document.getElementById('carta').classList.add('centrada');
-
-                document.getElementById('chocolates').classList.add('visibles');
-            }, 1800);
-        }
+                setTimeout(() => {
+                    fase2.style.opacity = '0';
+                    setTimeout(() => {
+                        fase2.style.display = 'none';
+                        
+                        setTimeout(() => {
+                            fase3.style.display = 'flex';
+                            setTimeout(() => { fase3.style.opacity = '1'; }, 50);
+                        }, 2000); 
+                        
+                    }, 400); 
+                }, 2500); 
+            }, 400); 
+        }, 2500); 
     </script>
 
 </body>
