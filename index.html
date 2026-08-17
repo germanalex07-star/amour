@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para mi Casi todo</title>
-    <!-- Importamos una fuente tierna y romántica de Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
     <style>
         /* --- ESTILOS (CSS) --- */
         body {
             margin: 0; padding: 0; min-height: 100vh;
-            /* Fondo negro con un toque sutil de Red Velvet en el ambiente */
             background: radial-gradient(circle at center, #2b0008 0%, #000000 70%);
             font-family: 'Poppins', sans-serif;
             color: #fff; display: flex; justify-content: center;
@@ -30,7 +28,6 @@
             z-index: 5; animation: fade-in 2s ease-out;
         }
 
-        /* Título con la fuente tierna y elegante estilo Red Velvet */
         h1 { 
             font-family: 'Dancing Script', cursive;
             font-size: 4em; 
@@ -45,7 +42,6 @@
             letter-spacing: 1px;
         }
 
-        /* Botón de corazón Red Velvet */
         .heart-button {
             width: 120px; height: 120px; background-color: #c9184a;
             position: relative; transform: rotate(-45deg); cursor: pointer;
@@ -65,7 +61,6 @@
         }
         @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Estrellas de la espiral con destello Red Velvet suave */
         .estrella {
             position: absolute; border-radius: 50%; cursor: pointer; z-index: 10;
             background-color: #ffffff;
@@ -79,7 +74,6 @@
             box-shadow: 0 0 15px #ff4d6d, 0 0 25px rgba(255, 77, 109, 1);
         }
 
-        /* Ventana Modal estilo Red Velvet */
         .modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 85%; max-width: 360px; 
@@ -108,7 +102,6 @@
 </head>
 <body>
 
-    <!-- ESTRUCTURA HTML -->
     <div id="landing-screen">
         <h1>Para mi Casi todo</h1>
         <p>Toca el corazón</p>
@@ -128,9 +121,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT JAVASCRIPT -->
     <script>
-        // Tus 100 mensajes románticos
         const frases = [
             "Eres una persona muy detallista que siempre se fija en cosas que nadie más ve y haces que cada momento se sienta especial.",
             "Eres la persona más tierna del mundo y tienes una dulzura natural que me desarma por completo.",
@@ -166,7 +157,7 @@
             "La complicidad que tenemos, esa que solo tú y yo entendemos.",
             "Tu madurez para enfrentar las situaciones y no dejarte vencer.",
             "Lo apasionada que eres con las cosas que amas; esa energía es contagiosa.",
-            "Cómo me apoyas en mis metas, incluso cuando yo dudo de mí mismo.",
+            "Cómo me apoyas en mis metas, incluso cuando yo dudo de mi mismo.",
             "Lo hermosa que te ves cuando estás distraída o concentrada.",
             "La manera en que me enseñas a ser mejor cada día y a corregir mis errores con madurez.",
             "Lo bien que combinamos; somos un equipo imparable.",
@@ -234,18 +225,18 @@
             "Porque no cambiaría ni un segundo de lo que soy contigo; te amo con todo lo que eres, tal cual eres."
         ];
 
-        // 10 enlaces estables y seguros de imágenes tiernas de Snoopy para garantizar que carguen siempre
+        // 10 imágenes de Snoopy optimizadas y listas para cargar sin errores
         const imagenesSnoopy = [
             "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png",
             "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png",
             "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png",
-            "https://i.pinimg.com/originals/a3/9a/91/a39a91176b5c3e6221c4323e1082ce47.png",
-            "https://i.pinimg.com/originals/52/80/7e/52807e37e5e3474d27f3299772186591.png",
-            "https://i.pinimg.com/originals/4e/44/2c/4e442c7aa6101d293d508e6f16c1417a.png",
-            "https://i.pinimg.com/originals/31/64/7b/31647bc52923f6637e1b7891cf27520e.png",
-            "https://i.pinimg.com/originals/8a/53/78/8a5378419bf4553531cfb57a6e19192b.png",
-            "https://i.pinimg.com/originals/7c/48/4d/7c484dfd60e7e10c732924346bc68809.png",
-            "https://i.pinimg.com/originals/91/8c/20/918c207d5792d711783cf53545b74158.png"
+            "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png",
+            "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png",
+            "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png",
+            "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png",
+            "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png",
+            "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png",
+            "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png"
         ];
 
         function iniciarGalaxia() {
@@ -262,10 +253,11 @@
                 const estrella = document.createElement('div');
                 estrella.classList.add('estrella');
                 
-                // Cálculo de la espiral
-                const theta = i * 0.25; 
-                const radio = 1.4 * theta; 
+                // MATEMÁTICAS DE LA ESPIRAL CORREGIDAS (Centro más abierto y expandido)
+                const theta = 0.5 + i * 0.18; // Controla la rotación y separación inicial
+                const radio = 3 + 3.5 * theta; // Separa las estrellas del centro para que no se amontonen
                 
+                // Conversión a coordenadas de pantalla centradas (50%, 50%)
                 const posX = 50 + radio * Math.cos(theta);
                 const posY = 50 + radio * Math.sin(theta);
                 
@@ -277,7 +269,7 @@
                 estrella.style.height = size;
                 
                 estrella.dataset.message = frases[i];
-                estrella.dataset.imageIndex = i % 10; // Selecciona una de las 10 imágenes en orden cíclico
+                estrella.dataset.imageIndex = i % 10; 
                 
                 estrella.onclick = function() {
                     abrirModal(this.dataset.message, this.dataset.imageIndex);
