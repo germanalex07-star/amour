@@ -21,18 +21,14 @@
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             z-index: 10; text-align: center;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.75);
         }
 
-        /* Contenedor de la cinta deslizable */
         #galaxy-container {
             display: none; position: relative;
             width: 100vw; height: 100vh;
-            z-index: 5; 
-            display: none; /* Se activará por JS */
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            z-index: 5; flex-direction: column;
+            justify-content: center; align-items: center;
             animation: fade-in 2s ease-out;
         }
 
@@ -50,25 +46,41 @@
             letter-spacing: 1px;
         }
 
+        /* Corazón estilizado con proporciones clásicas y latido natural */
         .heart-button {
-            width: 100px; height: 100px; background-color: #a4133c;
-            position: relative; transform: rotate(-45deg); cursor: pointer;
-            box-shadow: 0 0 35px rgba(164, 19, 60, 0.9);
-            animation: heart-beat 1.5s infinite; margin-top: 40px;
+            width: 90px; height: 90px; 
+            background-color: #800f2f; 
+            position: relative; 
+            transform: rotate(-45deg); 
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(128, 15, 47, 0.8);
+            animation: latidoNatural 1.3s infinite ease-in-out; 
+            margin-top: 50px;
             z-index: 20;
             touch-action: manipulation;
         }
+        
         .heart-button::before, .heart-button::after {
-            content: ''; width: 100px; height: 100px;
-            background-color: #a4133c; border-radius: 50%; position: absolute;
+            content: ''; 
+            width: 90px; height: 90px;
+            background-color: #800f2f; 
+            border-radius: 50%; 
+            position: absolute;
         }
-        .heart-button::before { top: -50px; left: 0; }
-        .heart-button::after { left: 50px; top: 0; }
+        
+        /* Posicionamiento exacto para formar los lóbulos superiores del corazón */
+        .heart-button::before { top: -45px; left: 0; }
+        .heart-button::after { left: 45px; top: 0; }
 
-        @keyframes heart-beat {
-            0%, 100% { transform: scale(1) rotate(-45deg); }
-            50% { transform: scale(1.15) rotate(-45deg); }
+        /* Animación de latido estilizada y fluida */
+        @keyframes latidoNatural {
+            0%, 100% { transform: scale(1) rotate(-45deg); box-shadow: 0 0 20px rgba(128, 15, 47, 0.6); }
+            15% { transform: scale(1.12) rotate(-45deg); box-shadow: 0 0 35px rgba(164, 19, 60, 0.9); }
+            30% { transform: scale(1) rotate(-45deg); box-shadow: 0 0 20px rgba(128, 15, 47, 0.6); }
+            45% { transform: scale(1.08) rotate(-45deg); box-shadow: 0 0 30px rgba(164, 19, 60, 0.8); }
+            60% { transform: scale(1) rotate(-45deg); box-shadow: 0 0 20px rgba(128, 15, 47, 0.6); }
         }
+
         @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
         /* Estilo de la cinta horizontal deslizable */
@@ -83,7 +95,6 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Ocultar la barra de barra fea de desplazamiento pero mantener la funcionalidad */
         .cinta-deslizable::-webkit-scrollbar {
             height: 8px;
         }
@@ -96,7 +107,6 @@
             border-radius: 10px;
         }
 
-        /* Esferas individuales dentro de la cinta */
         .esfera {
             flex: 0 0 60px;
             height: 60px;
@@ -121,7 +131,6 @@
             color: #38040e;
         }
 
-        /* Ventana Modal */
         .modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 85%; max-width: 380px; 
@@ -154,21 +163,18 @@
 </head>
 <body>
 
-    <!-- Pantalla Inicial -->
     <div id="landing-screen">
         <h1>Para mi Casi todo</h1>
         <p>Toca el corazón</p>
         <div class="heart-button" onclick="iniciarGalaxia()" ontouchstart="iniciarGalaxia()"></div>
     </div>
 
-    <!-- Contenedor de la Cinta -->
     <div id="galaxy-container">
         <h2 style="font-family: 'Dancing Script', cursive; color: #ffb3c6; font-size: 2.5em; margin-bottom: 0;">Elige una esfera</h2>
         <p style="color: #ff758c; font-size: 0.9em; margin-top: 5px;">Desliza hacia los lados</p>
         <div class="cinta-deslizable" id="cintaEsferas"></div>
     </div>
 
-    <!-- Ventana Modal de Mensajes -->
     <div id="modal-overlay" onclick="cerrarModal()"></div>
     <div id="modal" class="modal">
         <span class="close-modal" onclick="cerrarModal()">&times;</span>
@@ -177,7 +183,6 @@
         </div>
     </div>
 
-    <!-- SCRIPT JAVASCRIPT -->
     <script>
         const frases = [
             "Eres una persona muy detallista que siempre se fija en cosas que nadie más ve y haces que cada momento se sienta especial.",
@@ -288,19 +293,17 @@
             generarCinta(); 
         }
 
-        // Función para crear dinámicamente las 100 esferas numeradas dentro de la cinta
         function generarCinta() {
             const cinta = document.getElementById('cintaEsferas');
-            cinta.innerHTML = ''; // Limpiar por si acaso
+            cinta.innerHTML = '';
 
             for (let i = 0; i < frases.length; i++) {
                 const esfera = document.createElement('div');
                 esfera.classList.add('esfera');
-                esfera.textContent = i + 1; // Muestra el número de la esfera (del 1 al 100)
+                esfera.textContent = i + 1;
                 
                 esfera.dataset.message = frases[i];
                 
-                // Eventos optimizados para PC y dispositivos móviles (iPhone / Safari)
                 esfera.onclick = function() { abrirModal(this.dataset.message); };
                 esfera.ontouchstart = function() { abrirModal(this.dataset.message); };
 
