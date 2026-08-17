@@ -9,7 +9,9 @@
         /* --- ESTILOS (CSS) --- */
         body {
             margin: 0; padding: 0; min-height: 100vh;
-            background: radial-gradient(circle at center, #2b0008 0%, #000000 70%);
+            /* Fondo con la imagen de la galaxia en forma de corazón y una capa oscura elegante */
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('galaxia-corazon.jpg') no-repeat center center fixed;
+            background-size: cover;
             font-family: 'Poppins', sans-serif;
             color: #fff; display: flex; justify-content: center;
             align-items: center; overflow: hidden; 
@@ -20,6 +22,7 @@
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             z-index: 10; text-align: center;
+            background: rgba(0, 0, 0, 0.6); /* Fondo oscuro para resaltar la portada */
         }
 
         #galaxy-container {
@@ -61,10 +64,11 @@
         }
         @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
+        /* Estrellas distribuidas estratégicamente en forma de corazón */
         .estrella {
             position: absolute; border-radius: 50%; cursor: pointer; z-index: 10;
             background-color: #ffffff;
-            box-shadow: 0 0 5px #ff758c, 0 0 10px rgba(255, 117, 140, 0.8);
+            box-shadow: 0 0 6px #ff758c, 0 0 12px rgba(255, 255, 255, 0.9);
             border: 15px solid transparent; background-clip: padding-box; 
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
@@ -74,6 +78,7 @@
             box-shadow: 0 0 15px #ff4d6d, 0 0 25px rgba(255, 77, 109, 1);
         }
 
+        /* Ventana Modal estilo Red Velvet */
         .modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 85%; max-width: 360px; 
@@ -102,6 +107,7 @@
 </head>
 <body>
 
+    <!-- ESTRUCTURA HTML -->
     <div id="landing-screen">
         <h1>Para mi Casi todo</h1>
         <p>Toca el corazón</p>
@@ -121,6 +127,7 @@
         </div>
     </div>
 
+    <!-- SCRIPT JAVASCRIPT -->
     <script>
         const frases = [
             "Eres una persona muy detallista que siempre se fija en cosas que nadie más ve y haces que cada momento se sienta especial.",
@@ -180,7 +187,7 @@
             "Tu hermosa energía que llena toda la habitación.",
             "Cómo respetas y valoras a los demás, sin importar quiénes sean.",
             "Lo bien que nos divertimos haciendo cualquier tontería juntos.",
-            "Tu nobleza de corazón, que es lo más puro que he conocido.",
+            "Tu nobleza de corazón, que es lo más puro que ha conocido.",
             "La complicidad silenciosa que tenemos cuando nos entendemos con solo mirarnos.",
             "Lo increíblemente especial que eres para mí, mi persona favorita.",
             "Tu carisma único que hace que todos quieran estar cerca de ti.",
@@ -225,27 +232,28 @@
             "Porque no cambiaría ni un segundo de lo que soy contigo; te amo con todo lo que eres, tal cual eres."
         ];
 
-        // 10 imágenes de Snoopy optimizadas y listas para cargar sin errores
+        // 10 enlaces directos y estables de imágenes de Snoopy
         const imagenesSnoopy = [
             "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png",
             "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png",
             "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png",
-            "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png",
-            "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png",
-            "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png",
-            "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png",
-            "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png",
-            "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png",
-            "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png"
+            "https://i.pinimg.com/originals/a3/9a/91/a39a91176b5c3e6221c4323e1082ce47.png",
+            "https://i.pinimg.com/originals/52/80/7e/52807e37e5e3474d27f3299772186591.png",
+            "https://i.pinimg.com/originals/4e/44/2c/4e442c7aa6101d293d508e6f16c1417a.png",
+            "https://i.pinimg.com/originals/31/64/7b/31647bc52923f6637e1b7891cf27520e.png",
+            "https://i.pinimg.com/originals/8a/53/78/8a5378419bf4553531cfb57a6e19192b.png",
+            "https://i.pinimg.com/originals/7c/48/4d/7c484dfd60e7e10c732924346bc68809.png",
+            "https://i.pinimg.com/originals/91/8c/20/918c207d5792d711783cf53545b74158.png"
         ];
 
         function iniciarGalaxia() {
             document.getElementById('landing-screen').style.display = 'none';
             document.getElementById('galaxy-container').style.display = 'block';
-            generarEspiral(); 
+            generarCorazon(); 
         }
 
-        function generarEspiral() {
+        // Lógica matemática para posicionar las 100 estrellas siguiendo la forma de un corazón
+        function generarCorazon() {
             const capaEstrellas = document.getElementById('capa-estrellas');
             const cantidad = frases.length; 
 
@@ -253,18 +261,21 @@
                 const estrella = document.createElement('div');
                 estrella.classList.add('estrella');
                 
-                // MATEMÁTICAS DE LA ESPIRAL CORREGIDAS (Centro más abierto y expandido)
-                const theta = 0.5 + i * 0.18; // Controla la rotación y separación inicial
-                const radio = 3 + 3.5 * theta; // Separa las estrellas del centro para que no se amontonen
+                // Conversión del índice a ángulo en radianes
+                const t = (i / cantidad) * Math.PI * 2;
                 
-                // Conversión a coordenadas de pantalla centradas (50%, 50%)
-                const posX = 50 + radio * Math.cos(theta);
-                const posY = 50 + radio * Math.sin(theta);
+                // Ecuación paramétrica clásica del corazón
+                const x = 16 * Math.pow(Math.sin(t), 3);
+                const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+                
+                // Escalado y centrado porcentual en la pantalla para que coincida con el fondo
+                const posX = 50 + x * 1.8;
+                const posY = 52 + y * 1.8;
                 
                 estrella.style.left = posX + '%';
                 estrella.style.top = posY + '%';
                 
-                const size = (Math.random() * 3 + 2) + 'px';
+                const size = (Math.random() * 3 + 3) + 'px';
                 estrella.style.width = size;
                 estrella.style.height = size;
                 
