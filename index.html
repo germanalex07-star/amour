@@ -3,26 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para mi Casi todo 💖</title>
+    <title>( para mi Casi todo ) 💖</title>
     <style>
         /* --- ESTILOS (CSS) --- */
         body {
             margin: 0;
-            overflow: hidden;
-            background: radial-gradient(circle at center, #8a1c31 0%, #3d000a 100%); /* Red Velvet */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
-            text-align: center;
+            padding: 0;
+            min-height: 100vh;
+            /* Fondo de la galaxia en tonos Red Velvet y azul profundo */
+            background-color: #0d0a1b;
+            background-image:
+                radial-gradient(circle at 40% 50%, rgba(255, 0, 128, 0.4) 0%, rgba(255, 0, 128, 0) 60%),
+                radial-gradient(circle at 60% 50%, rgba(0, 128, 255, 0.3) 0%, rgba(0, 128, 255, 0) 70%),
+                radial-gradient(circle at 50% 40%, rgba(255, 80, 0, 0.2) 0%, rgba(255, 80, 0, 0) 50%),
+                radial-gradient(circle at 50% 60%, rgba(255, 0, 255, 0.2) 0%, rgba(255, 0, 255, 0) 50%);
+            background-size: cover;
+            font-family: 'Poppins', sans-serif; /* Tipografía tierna y moderna */
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Evitar barras de desplazamiento */
         }
 
         /* -- Pantalla de Inicio -- */
-        #pantallaInicio {
-            height: 100vh;
+        #landing-screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 1s ease; /* Transición suave para ocultarlo */
+            z-index: 10;
+            text-align: center;
         }
 
         h1 {
@@ -31,87 +45,140 @@
             margin-bottom: 20px;
         }
 
-        /* Animación de latido para el corazón */
-        @keyframes latido {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        #corazonBoton {
-            font-size: 5em;
+        /* Estilo del corazón CSS */
+        .heart-button {
+            width: 150px;
+            height: 150px;
+            background-color: #ff1493; /* Rosa fucsia */
+            position: relative;
+            transform: rotate(-45deg);
             cursor: pointer;
-            animation: latido 1.5s infinite; /* Aplica la animación infinitamente */
+            box-shadow: 0 0 30px rgba(255, 20, 147, 0.8);
+            animation: heart-beat 1.5s infinite; /* Animación de latido */
+            margin-top: 50px;
         }
 
-        /* -- Contenedor de la Galaxia -- */
-        #galaxia {
-            display: none; /* Oculto inicialmente */
+        .heart-button::before,
+        .heart-button::after {
+            content: '';
+            width: 150px;
+            height: 150px;
+            background-color: #ff1493;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .heart-button::before { top: -75px; left: 0; }
+        .heart-button::after { left: 75px; top: 0; }
+
+        @keyframes heart-beat {
+            0%, 100% { transform: scale(1) rotate(-45deg); }
+            50% { transform: scale(1.1) rotate(-45deg); }
+        }
+
+        /* -- Pantalla de la Galaxia -- */
+        #galaxy-container {
+            display: none; /* Oculto por defecto */
             position: relative;
             width: 100vw;
             height: 100vh;
+            z-index: 5;
+            animation: fade-in 2s ease-out; /* Animación de entrada */
         }
 
-        /* Estilo base de los planetas generados por JavaScript */
-        .planeta {
+        /* Capa para el efecto de nebulosa en forma de corazón */
+        #heart-nebula {
             position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background-image:
+                radial-gradient(circle, rgba(255, 20, 147, 0.6) 0%, rgba(255, 20, 147, 0) 70%),
+                radial-gradient(circle, rgba(255, 105, 180, 0.4) 0%, rgba(255, 105, 180, 0) 80%);
+            clip-path: polygon(50% 0%, 100% 35%, 82% 100%, 50% 80%, 18% 100%, 0% 35%); /* Forma aproximada de corazón */
+            filter: blur(15px); /* Desenfocar para un efecto de nebulosa suave */
+            z-index: 1;
+            opacity: 0.8;
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Estilo base de los planetas */
+        .planet {
+            position: absolute;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(255, 105, 135, 0.8);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            transition: transform 0.3s ease;
+            animation: sparkle 2s infinite;
         }
 
-        .planeta:hover {
+        .planet:hover {
             transform: scale(1.3);
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.9);
         }
 
-        /* -- Ventana Emergente (Modal) -- */
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.8; box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); }
+            50% { opacity: 1; box-shadow: 0 0 20px rgba(255, 255, 255, 1); }
+        }
+
+        /* -- Ventana Modal de Mensajes -- */
         .modal {
-            display: none;
+            display: none; /* Oculta por defecto */
             position: fixed;
-            top: 50%; left: 50%;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
-            background-color: #fff0f3;
-            color: #590d22;
-            padding: 30px;
+            width: 80%;
+            max-width: 400px;
+            background-color: #fff;
             border-radius: 20px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            padding: 30px;
             z-index: 100;
-            width: 320px;
             text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            color: #333;
         }
 
-        .fondo-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.6);
-            z-index: 90;
-        }
-
-        .modal img {
-            width: 150px;
-            height: 150px;
-            object-fit: contain;
+        .modal-content img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
             border-radius: 10px;
-            margin-bottom: 15px;
         }
 
-        .btn-cerrar {
-            background-color: #c9184a;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
+        .modal-content p {
+            font-size: 1.2em;
+            margin: 0;
+            color: #555;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2em;
             cursor: pointer;
-            font-size: 1em;
-            margin-top: 15px;
+            color: #ff1493;
         }
-        
-        .btn-cerrar:hover {
-            background-color: #ff4d6d;
+
+        #modal-overlay {
+            display: none; /* Oculta por defecto */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 90;
         }
     </style>
 </head>
@@ -119,103 +186,119 @@
 
     <!-- --- ESTRUCTURA (HTML) --- -->
     
-    <!-- Pantalla 1: El Inicio -->
-    <div id="pantallaInicio">
-        <h1>Para mi Casi todo</h1>
-        <div id="corazonBoton" onclick="iniciarGalaxia()">❤️</div>
-        <p>Toca el corazón</p>
+    <!-- Pantalla de Inicio con el título y el corazón -->
+    <div id="landing-screen">
+        <h1>( para mi Casi todo )</h1>
+        <p>Toca el corazón para explorar nuestra galaxia</p>
+        <div class="heart-button" onclick="startGame()"></div>
     </div>
 
-    <!-- Pantalla 2: La Galaxia (vacía, se llenará con JavaScript) -->
-    <div id="galaxia"></div>
+    <!-- Pantalla de la Galaxia (vacía al principio, se llena con JavaScript) -->
+    <div id="galaxy-container">
+        <div id="heart-nebula"></div>
+        <div id="planets-layer"></div>
+    </div>
 
-    <!-- Ventana de Mensajes (Modal) -->
-    <div id="fondoModal" class="fondo-modal" onclick="cerrarMensaje()"></div>
-    <div id="ventanaModal" class="modal">
-        <img id="imagenSnoopy" src="" alt="Snoopy tierno">
-        <h2 id="tituloMensaje">Mensaje</h2>
-        <p id="textoMensaje"></p>
-        <button class="btn-cerrar" onclick="cerrarMensaje()">Cerrar</button>
+    <!-- Ventana Modal para los mensajes -->
+    <div id="modal-overlay"></div>
+    <div id="modal" class="modal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="snoopy-image" src="" alt="Escena de Snoopy">
+            <p id="love-message"></p>
+        </div>
     </div>
 
     <!-- --- INTERACTIVIDAD (JAVASCRIPT) --- -->
     <script>
-        // 1. Nuestra lista de 15 mensajes y URLs de imágenes de Snoopy
-        const datosPlanetas = [
-            { mensaje: "A tu lado soy mi mejor versión", imagen: "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png" },
-            { mensaje: "Contigo todo es más bello", imagen: "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png" },
-            { mensaje: "Eres mi refugio favorito", imagen: "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png" },
-            { mensaje: "Haces que mi mundo gire", imagen: "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png" },
-            { mensaje: "Mi sonrisa tiene tu nombre", imagen: "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png" },
-            { mensaje: "Eres la casualidad más bonita", imagen: "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png" },
-            { mensaje: "Te elegiría un millón de veces más", imagen: "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png" },
-            { mensaje: "Iluminas mis días más oscuros", imagen: "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png" },
-            { mensaje: "Eres mi sueño hecho realidad", imagen: "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png" },
-            { mensaje: "Contigo el tiempo se detiene", imagen: "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png" },
-            { mensaje: "Eres la pieza que faltaba en mi rompecabezas", imagen: "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png" },
-            { mensaje: "Mi corazón late más fuerte por ti", imagen: "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png" },
-            { mensaje: "Eres mi lugar seguro", imagen: "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png" },
-            { mensaje: "Cada día te quiero un poquito más", imagen: "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png" },
-            { mensaje: "Juntos somos magia pura", imagen: "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png" }
+        // Array de datos de los 15 planetas con mensajes y descripciones de imágenes de Snoopy
+        const dataPlanetas = [
+            { id: 1, mensaje: "A tu lado soy mi mejor versión", imagen: "snoopy-hugging-woodstock.png", desc: "Snoopy abrazando a Woodstock" },
+            { id: 2, mensaje: "Contigo todo es más bello", imagen: "snoopy-woodstock-dancing.png", desc: "Snoopy y Woodstock bailando" },
+            { id: 3, mensaje: "Eres el sol de mi universo", imagen: "snoopy-lying-on-roof.png", desc: "Snoopy durmiendo bajo el sol" },
+            { id: 4, mensaje: "No hay galaxia más linda que tu sonrisa", imagen: "snoopy-grinning.png", desc: "Snoopy sonriendo" },
+            { id: 5, mensaje: "Mi corazón orbita alrededor del tuyo", imagen: "snoopy-with-heart-balloon.png", desc: "Snoopy con un globo de corazón" },
+            { id: 6, mensaje: "Juntos somos la constelación perfecta", imagen: "snoopy-woodstock-reading.png", desc: "Snoopy leyendo con Woodstock" },
+            { id: 7, mensaje: "Eres el descubrimiento más hermoso", imagen: "snoopy-peeking-out.png", desc: "Snoopy asomándose" },
+            { id: 8, mensaje: "Cada día te quiero más que a todas las estrellas", imagen: "snoopy-looking-at-stars.png", desc: "Snoopy mirando a las estrellas" },
+            { id: 9, mensaje: "Mi viaje espacial favorito es estar contigo", imagen: "snoopy-flying-ace.png", desc: "Snoopy como el Barón Rojo (más tierno, con un corazón)" },
+            { id: 10, mensaje: "Iluminas mi mundo como una supernova", imagen: "snoopy-holding-woodstock.png", desc: "Snoopy sosteniendo a Woodstock" },
+            { id: 11, mensaje: "Con tigo la vida es una dulce aventura", imagen: "snoopy-eating-donut.png", desc: "Snoopy comiendo una rosquilla" },
+            { id: 12, mensaje: "Mi deseo a una estrella fugaz eres tú", imagen: "snoopy-and-woodstock-on-swing.png", desc: "Snoopy y Woodstock en un columpio" },
+            { id: 13, mensaje: "Eres la gravedad que me mantiene feliz", imagen: "snoopy-smiling-at-woodstock.png", desc: "Snoopy sonriéndole a Woodstock" },
+            { id: 14, mensaje: "Nuestro amor es infinito como el espacio", imagen: "snoopy-hugging-his-doghouse.png", desc: "Snoopy abrazando su caseta" },
+            { id: 15, mensaje: "Simplemente, eres mi todo", imagen: "snoopy-kissing-woodstock.png", desc: "Snoopy dándole un beso a Woodstock" }
         ];
-        // Nota: He intercalado 3 imágenes de Snoopy distintas, puedes cambiar las URLs por las tuyas.
 
-        // 2. Función para ocultar el inicio y mostrar la galaxia
-        function iniciarGalaxia() {
-            document.getElementById('pantallaInicio').style.display = 'none'; // Oculta la pantalla inicial
-            document.getElementById('galaxia').style.display = 'block'; // Muestra el contenedor de la galaxia
-            crearPlanetas(); // Llama a la función que dibuja los 15 planetas
+        // Función para cambiar de la pantalla de inicio a la galaxia
+        function startGame() {
+            document.getElementById('landing-screen').style.display = 'none';
+            document.getElementById('galaxy-container').style.display = 'block';
+            generatePlanets(); // Crear los planetas al cargar la galaxia
         }
 
-        // 3. Función que crea los planetas automáticamente (Bucle)
-        function crearPlanetas() {
-            const contenedorGalaxia = document.getElementById('galaxia');
-            contenedorGalaxia.innerHTML = ''; // Asegura que la galaxia esté limpia antes de dibujar
+        // Función para generar los planetas dinámicamente
+        function generatePlanets() {
+            const planetsLayer = document.getElementById('planets-layer');
+            const numPlanets = dataPlanetas.length;
 
-            // Este "forEach" recorre la lista de los 15 mensajes, uno por uno
-            datosPlanetas.forEach((dato, indice) => {
-                // Crea un nuevo elemento "div" en el HTML
-                let nuevoPlaneta = document.createElement('div');
-                nuevoPlaneta.classList.add('planeta'); // Le da el estilo CSS de planeta
+            // Diferentes gradientes tiernos para los planetas
+            const planetGradients = [
+                'radial-gradient(circle at 30% 30%, #ff69b4 0%, #ff1493 80%)', /* Rosa */
+                'radial-gradient(circle at 30% 30%, #1e90ff 0%, #0000ff 80%)', /* Azul */
+                'radial-gradient(circle at 30% 30%, #ff4500 0%, #ff0000 80%)', /* Rojo */
+                'radial-gradient(circle at 30% 30%, #ff1493 0%, #ff69b4 80%)', /* Fucsia */
+                'radial-gradient(circle at 30% 30%, #00bfff 0%, #1e90ff 80%)'  /* Azul claro */
+            ];
 
-                // Calcula un tamaño aleatorio para cada planeta (entre 40px y 90px)
-                let tamaño = Math.floor(Math.random() * 50) + 40;
-                nuevoPlaneta.style.width = tamaño + 'px';
-                nuevoPlaneta.style.height = tamaño + 'px';
+            for (let i = 0; i < numPlanets; i++) {
+                const planet = document.createElement('div');
+                planet.classList.add('planet');
+                
+                // Posicionamiento aleatorio en la pantalla, dentro de márgenes
+                planet.style.top = (Math.random() * 80 + 10) + '%';
+                planet.style.left = (Math.random() * 80 + 10) + '%';
+                
+                // Tamaño ligeramente variado
+                const size = Math.random() * 10 + 25 + 'px';
+                planet.style.width = size;
+                planet.style.height = size;
 
-                // Genera colores rojos/rosados aleatorios para variar
-                let color1 = `hsl(${340 + Math.random()*20}, 80%, 60%)`; 
-                let color2 = `hsl(${320 + Math.random()*20}, 90%, 80%)`;
-                nuevoPlaneta.style.background = `linear-gradient(135deg, ${color1}, ${color2})`;
-
-                // Posición aleatoria en la pantalla (dejando márgenes para que no se salgan)
-                nuevoPlaneta.style.top = (Math.random() * 80 + 10) + '%';
-                nuevoPlaneta.style.left = (Math.random() * 80 + 10) + '%';
-
-                // Le decimos qué debe hacer al hacerle clic
-                nuevoPlaneta.onclick = function() {
-                    abrirMensaje(indice);
+                // Color aleatorio
+                planet.style.background = planetGradients[Math.floor(Math.random() * planetGradients.length)];
+                
+                // Guardar los datos del planeta en el elemento HTML
+                planet.dataset.id = dataPlanetas[i].id;
+                
+                // Añadir evento de clic
+                planet.onclick = function() {
+                    openModal(this.dataset.id);
                 };
 
-                // Finalmente, lo agrega al contenedor de la galaxia en el HTML
-                contenedorGalaxia.appendChild(nuevoPlaneta);
-            });
+                planetsLayer.appendChild(planet);
+            }
         }
 
-        // 4. Función para abrir la ventana con el mensaje
-        function abrirMensaje(indice) {
-            document.getElementById('tituloMensaje').innerText = `Planeta #${indice + 1}`;
-            document.getElementById('textoMensaje').innerText = datosPlanetas[indice].mensaje;
-            document.getElementById('imagenSnoopy').src = datosPlanetas[indice].imagen;
+        // Funciones para manejar la ventana modal
+        function openModal(planetId) {
+            // Encontrar los datos del planeta correcto
+            const planetData = dataPlanetas.find(p => p.id == planetId);
+            if (planetData) {
+                // Actualizar el contenido del modal
+                document.getElementById('snoopy-image').src = planetData.imagen;
+                document.getElementById('snoopy-image').alt = planetData.desc;
+                document.getElementById('love-message').textContent = planetData.mensaje;
 
-            document.getElementById('ventanaModal').style.display = 'block';
-            document.getElementById('fondoModal').style.display = 'block';
+                // Mostrar el modal y el fondo oscuro
+                document.getElementById('modal').style.display = 'block';
+                document.getElementById('modal-overlay').style.display = 'block';
+            }
         }
 
-        // 5. Función para cerrar la ventana
-        function cerrarMensaje() {
-            document.getElementById('ventanaModal').style.display = 'none';
-            document.getElementById('fondoModal').style.display = 'none';
+        function closeModal() {
+            // Ocultar el modal y el fondo oscuro
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('modal-overlay').style.display = 'none';
         }
     </script>
 </body>
