@@ -3,84 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuestra Galaxia Red Velvet</title>
+    <title>Para mi Casi todo 💖</title>
     <style>
         /* --- ESTILOS (CSS) --- */
-        /* Aquí definimos los colores Red Velvet y la fuente */
         body {
             margin: 0;
-            overflow: hidden; /* Evita que la página tenga barras de desplazamiento */
-            background: radial-gradient(circle at center, #8a1c31 0%, #3d000a 100%); /* Color Red Velvet */
+            overflow: hidden;
+            background: radial-gradient(circle at center, #8a1c31 0%, #3d000a 100%); /* Red Velvet */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: white;
             text-align: center;
         }
 
-        h1 {
-            margin-top: 30px;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        /* -- Pantalla de Inicio -- */
+        #pantallaInicio {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease; /* Transición suave para ocultarlo */
         }
 
-        /* Contenedor de la galaxia */
-        .galaxia {
+        h1 {
+            font-size: 3em;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+        }
+
+        /* Animación de latido para el corazón */
+        @keyframes latido {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        #corazonBoton {
+            font-size: 5em;
+            cursor: pointer;
+            animation: latido 1.5s infinite; /* Aplica la animación infinitamente */
+        }
+
+        /* -- Contenedor de la Galaxia -- */
+        #galaxia {
+            display: none; /* Oculto inicialmente */
             position: relative;
             width: 100vw;
-            height: 80vh;
+            height: 100vh;
         }
 
-        /* Estilo base para los planetas */
+        /* Estilo base de los planetas generados por JavaScript */
         .planeta {
             position: absolute;
             border-radius: 50%;
-            cursor: pointer; /* Cambia el cursor a una manito al pasar sobre ellos */
-            box-shadow: 0 0 20px rgba(255, 105, 135, 0.6); /* Brillo tierno */
-            transition: transform 0.3s ease; /* Efecto suave al pasar el mouse */
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 105, 135, 0.8);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* Efecto de crecimiento al pasar el mouse sobre un planeta */
         .planeta:hover {
-            transform: scale(1.2);
+            transform: scale(1.3);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.9);
         }
 
-        /* Ubicación y color del Planeta 1 */
-        #planeta1 {
-            width: 80px; height: 80px;
-            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
-            top: 20%; left: 20%;
-        }
-
-        /* Ubicación y color del Planeta 2 */
-        #planeta2 {
-            width: 100px; height: 100px;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
-            top: 50%; left: 60%;
-        }
-
-        /* Ubicación y color del Planeta 3 */
-        #planeta3 {
-            width: 60px; height: 60px;
-            background: linear-gradient(135deg, #f77062 0%, #fe5196 100%);
-            top: 70%; left: 30%;
-        }
-
-        /* Estilos de la ventana emergente (Modal) */
+        /* -- Ventana Emergente (Modal) -- */
         .modal {
-            display: none; /* Oculto por defecto */
+            display: none;
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            background-color: #fff0f3; /* Un rosa muy clarito y tierno */
+            background-color: #fff0f3;
             color: #590d22;
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 0 30px rgba(0,0,0,0.8);
             z-index: 100;
-            width: 300px;
+            width: 320px;
             text-align: center;
         }
 
-        /* Fondo oscuro al abrir la ventana emergente */
         .fondo-modal {
             display: none;
             position: fixed;
@@ -90,14 +91,14 @@
             z-index: 90;
         }
 
-        /* Estilo de la imagen de Snoopy */
         .modal img {
             width: 150px;
+            height: 150px;
+            object-fit: contain;
             border-radius: 10px;
             margin-bottom: 15px;
         }
 
-        /* Estilo del botón de cerrar */
         .btn-cerrar {
             background-color: #c9184a;
             color: white;
@@ -106,7 +107,7 @@
             border-radius: 10px;
             cursor: pointer;
             font-size: 1em;
-            margin-top: 10px;
+            margin-top: 15px;
         }
         
         .btn-cerrar:hover {
@@ -117,58 +118,101 @@
 <body>
 
     <!-- --- ESTRUCTURA (HTML) --- -->
-    <h1>Para mi Universo... 💖</h1>
-
-    <div class="galaxia">
-        <!-- Estos son los planetas. El 'onclick' le dice qué función de JS usar al dar clic -->
-        <div id="planeta1" class="planeta" onclick="abrirMensaje(0)"></div>
-        <div id="planeta2" class="planeta" onclick="abrirMensaje(1)"></div>
-        <div id="planeta3" class="planeta" onclick="abrirMensaje(2)"></div>
+    
+    <!-- Pantalla 1: El Inicio -->
+    <div id="pantallaInicio">
+        <h1>Para mi Casi todo</h1>
+        <div id="corazonBoton" onclick="iniciarGalaxia()">❤️</div>
+        <p>Toca el corazón</p>
     </div>
 
-    <!-- El fondo oscuro y la ventana emergente que se mostrarán al hacer clic -->
+    <!-- Pantalla 2: La Galaxia (vacía, se llenará con JavaScript) -->
+    <div id="galaxia"></div>
+
+    <!-- Ventana de Mensajes (Modal) -->
     <div id="fondoModal" class="fondo-modal" onclick="cerrarMensaje()"></div>
     <div id="ventanaModal" class="modal">
         <img id="imagenSnoopy" src="" alt="Snoopy tierno">
-        <h2 id="tituloMensaje"></h2>
+        <h2 id="tituloMensaje">Mensaje</h2>
         <p id="textoMensaje"></p>
         <button class="btn-cerrar" onclick="cerrarMensaje()">Cerrar</button>
     </div>
 
     <!-- --- INTERACTIVIDAD (JAVASCRIPT) --- -->
     <script>
-        // Aquí guardamos los datos de cada planeta (Títulos, Mensajes y URLs de las imágenes)
+        // 1. Nuestra lista de 15 mensajes y URLs de imágenes de Snoopy
         const datosPlanetas = [
-            {
-                titulo: "Planeta del Amor",
-                mensaje: "Eres lo mejor que me ha pasado. ¡Te quiero muchísimo!",
-                imagen: "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png"
-            },
-            {
-                titulo: "Planeta de la Ternura",
-                mensaje: "Cada momento a tu lado es tan especial como las estrellas de esta galaxia.",
-                imagen: "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png"
-            },
-            {
-                titulo: "Planeta de la Felicidad",
-                mensaje: "Mi lugar favorito en todo el universo es siempre junto a ti.",
-                imagen: "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png"
-            }
+            { mensaje: "A tu lado soy mi mejor versión", imagen: "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png" },
+            { mensaje: "Contigo todo es más bello", imagen: "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png" },
+            { mensaje: "Eres mi refugio favorito", imagen: "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png" },
+            { mensaje: "Haces que mi mundo gire", imagen: "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png" },
+            { mensaje: "Mi sonrisa tiene tu nombre", imagen: "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png" },
+            { mensaje: "Eres la casualidad más bonita", imagen: "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png" },
+            { mensaje: "Te elegiría un millón de veces más", imagen: "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png" },
+            { mensaje: "Iluminas mis días más oscuros", imagen: "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png" },
+            { mensaje: "Eres mi sueño hecho realidad", imagen: "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png" },
+            { mensaje: "Contigo el tiempo se detiene", imagen: "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png" },
+            { mensaje: "Eres la pieza que faltaba en mi rompecabezas", imagen: "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png" },
+            { mensaje: "Mi corazón late más fuerte por ti", imagen: "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png" },
+            { mensaje: "Eres mi lugar seguro", imagen: "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png" },
+            { mensaje: "Cada día te quiero un poquito más", imagen: "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png" },
+            { mensaje: "Juntos somos magia pura", imagen: "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png" }
         ];
+        // Nota: He intercalado 3 imágenes de Snoopy distintas, puedes cambiar las URLs por las tuyas.
 
-        // Función para abrir la ventana emergente con el mensaje correcto
+        // 2. Función para ocultar el inicio y mostrar la galaxia
+        function iniciarGalaxia() {
+            document.getElementById('pantallaInicio').style.display = 'none'; // Oculta la pantalla inicial
+            document.getElementById('galaxia').style.display = 'block'; // Muestra el contenedor de la galaxia
+            crearPlanetas(); // Llama a la función que dibuja los 15 planetas
+        }
+
+        // 3. Función que crea los planetas automáticamente (Bucle)
+        function crearPlanetas() {
+            const contenedorGalaxia = document.getElementById('galaxia');
+            contenedorGalaxia.innerHTML = ''; // Asegura que la galaxia esté limpia antes de dibujar
+
+            // Este "forEach" recorre la lista de los 15 mensajes, uno por uno
+            datosPlanetas.forEach((dato, indice) => {
+                // Crea un nuevo elemento "div" en el HTML
+                let nuevoPlaneta = document.createElement('div');
+                nuevoPlaneta.classList.add('planeta'); // Le da el estilo CSS de planeta
+
+                // Calcula un tamaño aleatorio para cada planeta (entre 40px y 90px)
+                let tamaño = Math.floor(Math.random() * 50) + 40;
+                nuevoPlaneta.style.width = tamaño + 'px';
+                nuevoPlaneta.style.height = tamaño + 'px';
+
+                // Genera colores rojos/rosados aleatorios para variar
+                let color1 = `hsl(${340 + Math.random()*20}, 80%, 60%)`; 
+                let color2 = `hsl(${320 + Math.random()*20}, 90%, 80%)`;
+                nuevoPlaneta.style.background = `linear-gradient(135deg, ${color1}, ${color2})`;
+
+                // Posición aleatoria en la pantalla (dejando márgenes para que no se salgan)
+                nuevoPlaneta.style.top = (Math.random() * 80 + 10) + '%';
+                nuevoPlaneta.style.left = (Math.random() * 80 + 10) + '%';
+
+                // Le decimos qué debe hacer al hacerle clic
+                nuevoPlaneta.onclick = function() {
+                    abrirMensaje(indice);
+                };
+
+                // Finalmente, lo agrega al contenedor de la galaxia en el HTML
+                contenedorGalaxia.appendChild(nuevoPlaneta);
+            });
+        }
+
+        // 4. Función para abrir la ventana con el mensaje
         function abrirMensaje(indice) {
-            // Buscamos los elementos en el HTML para cambiarles el contenido
-            document.getElementById('tituloMensaje').innerText = datosPlanetas[indice].titulo;
+            document.getElementById('tituloMensaje').innerText = `Planeta #${indice + 1}`;
             document.getElementById('textoMensaje').innerText = datosPlanetas[indice].mensaje;
             document.getElementById('imagenSnoopy').src = datosPlanetas[indice].imagen;
 
-            // Mostramos la ventana y el fondo oscuro
             document.getElementById('ventanaModal').style.display = 'block';
             document.getElementById('fondoModal').style.display = 'block';
         }
 
-        // Función para cerrar la ventana emergente
+        // 5. Función para cerrar la ventana
         function cerrarMensaje() {
             document.getElementById('ventanaModal').style.display = 'none';
             document.getElementById('fondoModal').style.display = 'none';
