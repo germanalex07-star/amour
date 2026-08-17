@@ -3,17 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaxia de 100 Elementos</title>
+    <title>Galaxia en Espiral de 100 Estrellas</title>
     <style>
         /* --- ESTILOS (CSS) --- */
         body {
             margin: 0; padding: 0; min-height: 100vh;
-            background-color: #0d0a1b;
-            background-image:
-                radial-gradient(circle at 40% 50%, rgba(255, 0, 128, 0.4) 0%, rgba(255, 0, 128, 0) 60%),
-                radial-gradient(circle at 60% 50%, rgba(0, 128, 255, 0.3) 0%, rgba(0, 128, 255, 0) 70%),
-                radial-gradient(circle at 50% 40%, rgba(255, 80, 0, 0.2) 0%, rgba(255, 80, 0, 0) 50%);
-            background-size: cover;
+            background-color: #000000; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #fff; display: flex; justify-content: center;
             align-items: center; overflow: hidden; 
@@ -32,7 +27,7 @@
             z-index: 5; animation: fade-in 2s ease-out;
         }
 
-        h1 { font-size: 3em; text-shadow: 2px 2px 5px rgba(0,0,0,0.5); margin-bottom: 20px; }
+        h1 { font-size: 3em; text-shadow: 2px 2px 5px rgba(255,255,255,0.2); margin-bottom: 20px; }
 
         .heart-button {
             width: 120px; height: 120px; background-color: #ff1493;
@@ -53,74 +48,63 @@
         }
         @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
-        #heart-nebula {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; height: 90%;
-            background-image:
-                radial-gradient(circle, rgba(255, 20, 147, 0.5) 0%, rgba(255, 20, 147, 0) 70%),
-                radial-gradient(circle, rgba(255, 105, 180, 0.3) 0%, rgba(255, 105, 180, 0) 80%);
-            clip-path: polygon(50% 0%, 100% 35%, 82% 100%, 50% 80%, 18% 100%, 0% 35%);
-            filter: blur(20px); z-index: 1; opacity: 0.8;
-        }
-
-        .planet {
+        .estrella {
             position: absolute; border-radius: 50%; cursor: pointer; z-index: 10;
-            border: 12px solid transparent; background-clip: padding-box; 
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+            background-color: #ffffff;
+            box-shadow: 0 0 4px #fff, 0 0 8px rgba(255, 255, 255, 0.8);
+            border: 15px solid transparent; background-clip: padding-box; 
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .planet:hover {
-            transform: scale(2); box-shadow: 0 0 15px rgba(255, 255, 255, 1);
+        
+        .estrella:hover {
+            transform: scale(2.5);
+            box-shadow: 0 0 15px #fff, 0 0 25px rgba(255, 255, 255, 1);
         }
 
         .modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 80%; max-width: 350px; background-color: #fff0f3; border-radius: 15px;
             padding: 25px; z-index: 100; text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8); color: #333;
+            box-shadow: 0 10px 40px rgba(255,255,255,0.2); color: #333;
         }
         .modal-content img {
-            max-width: 150px; height: auto; margin-bottom: 15px; border-radius: 10px;
+            max-width: 150px; height: 150px; object-fit: cover; margin-bottom: 15px; border-radius: 10px;
         }
-        .modal-content p { font-size: 1.1em; margin: 0; color: #590d22; font-weight: 500; }
+        .modal-content p { font-size: 1.1em; margin: 0; color: #000; font-weight: 500; }
         .close-modal {
             position: absolute; top: 10px; right: 15px;
             font-size: 1.8em; cursor: pointer; color: #ff1493;
         }
         #modal-overlay {
             display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 90;
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 90;
         }
     </style>
 </head>
 <body>
 
-    <!-- ESTRUCTURA HTML -->
     <div id="landing-screen">
-        <h1>( para mi Casi todo )</h1>
+        <h1>Para mi Casi todo</h1>
         <p>Toca el corazón</p>
-        <div class="heart-button" onclick="startGame()"></div>
+        <div class="heart-button" onclick="iniciarGalaxia()"></div>
     </div>
 
     <div id="galaxy-container">
-        <div id="heart-nebula"></div>
-        <div id="planets-layer"></div>
+        <div id="capa-estrellas"></div>
     </div>
 
-    <div id="modal-overlay" onclick="closeModal()"></div>
+    <div id="modal-overlay" onclick="cerrarModal()"></div>
     <div id="modal" class="modal">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <span class="close-modal" onclick="cerrarModal()">&times;</span>
         <div class="modal-content">
-            <!-- La imagen ahora cargará archivos locales .jpg -->
-            <img id="display-image" src="" alt="Imagen dinámica">
+            <!-- Imagen con control de errores por si el archivo no existe -->
+            <img id="display-image" src="" alt="Snoopy" onerror="this.src='https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png'">
             <p id="display-message"></p>
         </div>
     </div>
 
-    <!-- SCRIPT JAVASCRIPT -->
     <script>
-        // Los 100 mensajes que pasaste anteriormente
-        const rawStrings = [
+        const frases = [
             "Eres una persona muy detallista que siempre se fija en cosas que nadie más ve y haces que cada momento se sienta especial.",
             "Eres la persona más tierna del mundo y tienes una dulzura natural que me desarma por completo.",
             "Eres increíblemente cariñosa y tus muestras de afecto son mi parte favorita del día.",
@@ -157,12 +141,12 @@
             "Lo apasionada que eres con las cosas que amas; esa energía es contagiosa.",
             "Cómo me apoyas en mis metas, incluso cuando yo dudo de mí mismo.",
             "Lo hermosa que te ves cuando estás distraída o concentrada.",
-            "La luz que aportas a mi vida con cada pequeña acción.",
+            "La manera en que me enseñas a ser mejor cada día y a corregir mis errores con madurez.",
             "Lo bien que combinamos; somos un equipo imparable.",
             "Tu hermosa forma de ver la vida, siempre encontrando algo positivo.",
             "Cómo me haces querer ser una mejor persona cada día.",
             "Lo fuerte que eres ante las adversidades de la vida.",
-            "La confianza que me ganaré día a día para cuidar de tu corazón.",
+            "El esfuerzo mutuo que pondré para demostrarte que puedes volver a confiar plenamente en mí.",
             "Tu estilo único al vestir; siempre te ves espectacular.",
             "Las pláticas largas en las que podemos hablar de todo y de nada.",
             "Cómo disfrutas de las pequeñas cosas, como un buen postre o un atardecer.",
@@ -179,7 +163,7 @@
             "Cómo respetas y valoras a los demás, sin importar quiénes sean.",
             "Lo bien que nos divertimos haciendo cualquier tontería juntos.",
             "Tu nobleza de corazón, que es lo más puro que he conocido.",
-            "La magia que irradias sin siquiera intentarlo.",
+            "La complicidad silenciosa que tenemos cuando nos entendemos con solo mirarnos.",
             "Lo increíblemente especial que eres para mí, mi persona favorita.",
             "Tu carisma único que hace que todos quieran estar cerca de ti.",
             "La sinceridad con la que siempre me hablas, aunque a veces duela.",
@@ -212,7 +196,7 @@
             "Tu frescura y espontaneidad al vivir.",
             "Lo mucho que crezco y aprendo gracias a ti.",
             "Tu hermosa manera de amar, que me hace sentir afortunado.",
-            "Cómo haces que cualquier plan, por simple que sea, sea inolvidable.",
+            "Cómo haces que the cualquier plan, por simple que sea, sea inolvidable.",
             "Tu optimismo, que me ayuda a ver el vaso medio lleno.",
             "Lo bien que encajas en mi vida, como si hubieras estado siempre aquí.",
             "Tus besos, que se sienten como llegar a casa después de un largo viaje.",
@@ -223,53 +207,54 @@
             "Porque no cambiaría ni un segundo de lo que soy contigo; te amo con todo lo que eres, tal cual eres."
         ];
 
-        function startGame() {
+        function iniciarGalaxia() {
             document.getElementById('landing-screen').style.display = 'none';
             document.getElementById('galaxy-container').style.display = 'block';
-            generatePlanets(); 
+            generarEspiral(); 
         }
 
-        function generatePlanets() {
-            const planetsLayer = document.getElementById('planets-layer');
-            const numPlanets = rawStrings.length; 
+        function generarEspiral() {
+            const capaEstrellas = document.getElementById('capa-estrellas');
+            const cantidad = frases.length; 
 
-            for (let i = 0; i < numPlanets; i++) {
-                const planet = document.createElement('div');
-                planet.classList.add('planet');
+            for (let i = 0; i < cantidad; i++) {
+                const estrella = document.createElement('div');
+                estrella.classList.add('estrella');
                 
-                planet.style.top = (Math.random() * 90 + 5) + '%';
-                planet.style.left = (Math.random() * 90 + 5) + '%';
+                const theta = i * 0.25; 
+                const radio = 1.4 * theta; 
                 
-                const size = (Math.random() * 5 + 4) + 'px';
-                planet.style.width = size;
-                planet.style.height = size;
-
-                const hue = Math.floor(Math.random() * 60) + 300; 
-                planet.style.backgroundColor = `hsl(${hue}, 100%, 70%)`;
+                const posX = 50 + radio * Math.cos(theta);
+                const posY = 50 + radio * Math.sin(theta);
                 
-                planet.dataset.message = rawStrings[i];
+                estrella.style.left = posX + '%';
+                estrella.style.top = posY + '%';
                 
-                // AQUÍ ESTÁ LA MAGIA MATEMÁTICA: (i % 10) + 1 asegura que los números vayan del 1 al 10 repitiéndose.
-                planet.dataset.imageIndex = (i % 10) + 1;
+                const size = (Math.random() * 3 + 2) + 'px';
+                estrella.style.width = size;
+                estrella.style.height = size;
                 
-                planet.onclick = function() {
-                    openModal(this.dataset.message, this.dataset.imageIndex);
+                estrella.dataset.message = frases[i];
+                estrella.dataset.imageIndex = (i % 10) + 1;
+                
+                estrella.onclick = function() {
+                    abrirModal(this.dataset.message, this.dataset.imageIndex);
                 };
 
-                planetsLayer.appendChild(planet);
+                capaEstrellas.appendChild(estrella);
             }
         }
 
-        function openModal(message, imageIndex) {
-            // El código ahora buscará archivos .jpg en lugar de URLs de internet
-            document.getElementById('display-image').src = `snoopy-${imageIndex}.jpg`;
-            document.getElementById('display-message').textContent = message;
+        function abrirModal(mensaje, indiceImagen) {
+            // Intenta cargar la imagen local correspondiente (ej. snoopy-1.jpg)
+            document.getElementById('display-image').src = `snoopy-${indiceImagen}.jpg`;
+            document.getElementById('display-message').textContent = mensaje;
             
             document.getElementById('modal').style.display = 'block';
             document.getElementById('modal-overlay').style.display = 'block';
         }
 
-        function closeModal() {
+        function cerrarModal() {
             document.getElementById('modal').style.display = 'none';
             document.getElementById('modal-overlay').style.display = 'none';
         }
