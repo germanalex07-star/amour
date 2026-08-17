@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaxia en Espiral de 100 Estrellas</title>
+    <title>Para mi Casi todo</title>
+    <!-- Importamos una fuente tierna y romántica de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
     <style>
         /* --- ESTILOS (CSS) --- */
         body {
             margin: 0; padding: 0; min-height: 100vh;
-            background-color: #000000; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Fondo negro con un toque sutil de Red Velvet en el ambiente */
+            background: radial-gradient(circle at center, #2b0008 0%, #000000 70%);
+            font-family: 'Poppins', sans-serif;
             color: #fff; display: flex; justify-content: center;
             align-items: center; overflow: hidden; 
         }
@@ -27,62 +30,85 @@
             z-index: 5; animation: fade-in 2s ease-out;
         }
 
-        h1 { font-size: 3em; text-shadow: 2px 2px 5px rgba(255,255,255,0.2); margin-bottom: 20px; }
+        /* Título con la fuente tierna y elegante estilo Red Velvet */
+        h1 { 
+            font-family: 'Dancing Script', cursive;
+            font-size: 4em; 
+            color: #ffb3c6;
+            text-shadow: 0 0 20px rgba(201, 24, 74, 0.8), 2px 2px 5px rgba(0,0,0,0.8); 
+            margin-bottom: 10px; 
+        }
 
+        #landing-screen p {
+            color: #ff85a1;
+            font-size: 1.2em;
+            letter-spacing: 1px;
+        }
+
+        /* Botón de corazón Red Velvet */
         .heart-button {
-            width: 120px; height: 120px; background-color: #ff1493;
+            width: 120px; height: 120px; background-color: #c9184a;
             position: relative; transform: rotate(-45deg); cursor: pointer;
-            box-shadow: 0 0 30px rgba(255, 20, 147, 0.8);
-            animation: heart-beat 1.5s infinite; margin-top: 50px;
+            box-shadow: 0 0 30px rgba(201, 24, 74, 0.9);
+            animation: heart-beat 1.5s infinite; margin-top: 40px;
         }
         .heart-button::before, .heart-button::after {
             content: ''; width: 120px; height: 120px;
-            background-color: #ff1493; border-radius: 50%; position: absolute;
+            background-color: #c9184a; border-radius: 50%; position: absolute;
         }
         .heart-button::before { top: -60px; left: 0; }
         .heart-button::after { left: 60px; top: 0; }
 
         @keyframes heart-beat {
             0%, 100% { transform: scale(1) rotate(-45deg); }
-            50% { transform: scale(1.1) rotate(-45deg); }
+            50% { transform: scale(1.15) rotate(-45deg); }
         }
         @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
+        /* Estrellas de la espiral con destello Red Velvet suave */
         .estrella {
             position: absolute; border-radius: 50%; cursor: pointer; z-index: 10;
             background-color: #ffffff;
-            box-shadow: 0 0 4px #fff, 0 0 8px rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 5px #ff758c, 0 0 10px rgba(255, 117, 140, 0.8);
             border: 15px solid transparent; background-clip: padding-box; 
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         
         .estrella:hover {
             transform: scale(2.5);
-            box-shadow: 0 0 15px #fff, 0 0 25px rgba(255, 255, 255, 1);
+            box-shadow: 0 0 15px #ff4d6d, 0 0 25px rgba(255, 77, 109, 1);
         }
 
+        /* Ventana Modal estilo Red Velvet */
         .modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 80%; max-width: 350px; background-color: #fff0f3; border-radius: 15px;
-            padding: 25px; z-index: 100; text-align: center;
-            box-shadow: 0 10px 40px rgba(255,255,255,0.2); color: #333;
+            width: 85%; max-width: 360px; 
+            background: linear-gradient(135deg, #fff0f3 0%, #ffccd5 100%); 
+            border-radius: 20px;
+            padding: 30px 20px; z-index: 100; text-align: center;
+            box-shadow: 0 10px 40px rgba(201, 24, 74, 0.5); color: #590d22;
+            border: 2px solid #ff4d6d;
         }
         .modal-content img {
-            max-width: 150px; height: 150px; object-fit: cover; margin-bottom: 15px; border-radius: 10px;
+            max-width: 160px; height: 160px; object-fit: contain; margin-bottom: 15px; border-radius: 12px;
         }
-        .modal-content p { font-size: 1.1em; margin: 0; color: #000; font-weight: 500; }
+        .modal-content p { font-size: 1.1em; margin: 0; color: #800f2f; font-weight: 500; line-height: 1.4; }
         .close-modal {
-            position: absolute; top: 10px; right: 15px;
-            font-size: 1.8em; cursor: pointer; color: #ff1493;
+            position: absolute; top: 12px; right: 18px;
+            font-size: 1.8em; cursor: pointer; color: #c9184a;
+            transition: transform 0.2s;
         }
+        .close-modal:hover { transform: scale(1.2); }
+
         #modal-overlay {
             display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 90;
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); z-index: 90;
         }
     </style>
 </head>
 <body>
 
+    <!-- ESTRUCTURA HTML -->
     <div id="landing-screen">
         <h1>Para mi Casi todo</h1>
         <p>Toca el corazón</p>
@@ -97,13 +123,14 @@
     <div id="modal" class="modal">
         <span class="close-modal" onclick="cerrarModal()">&times;</span>
         <div class="modal-content">
-            <!-- Imagen con control de errores por si el archivo no existe -->
-            <img id="display-image" src="" alt="Snoopy" onerror="this.src='https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png'">
+            <img id="display-image" src="" alt="Snoopy tierno">
             <p id="display-message"></p>
         </div>
     </div>
 
+    <!-- SCRIPT JAVASCRIPT -->
     <script>
+        // Tus 100 mensajes románticos
         const frases = [
             "Eres una persona muy detallista que siempre se fija en cosas que nadie más ve y haces que cada momento se sienta especial.",
             "Eres la persona más tierna del mundo y tienes una dulzura natural que me desarma por completo.",
@@ -196,7 +223,7 @@
             "Tu frescura y espontaneidad al vivir.",
             "Lo mucho que crezco y aprendo gracias a ti.",
             "Tu hermosa manera de amar, que me hace sentir afortunado.",
-            "Cómo haces que the cualquier plan, por simple que sea, sea inolvidable.",
+            "Cómo haces que cualquier plan, por simple que sea, sea inolvidable.",
             "Tu optimismo, que me ayuda a ver el vaso medio lleno.",
             "Lo bien que encajas en mi vida, como si hubieras estado siempre aquí.",
             "Tus besos, que se sienten como llegar a casa después de un largo viaje.",
@@ -205,6 +232,20 @@
             "Lo perfecta que eres para mí, con todas tus luces y tus días difíciles.",
             "Porque simplemente eres tú, y mi vida cambió para mejor desde que llegaste.",
             "Porque no cambiaría ni un segundo de lo que soy contigo; te amo con todo lo que eres, tal cual eres."
+        ];
+
+        // 10 enlaces estables y seguros de imágenes tiernas de Snoopy para garantizar que carguen siempre
+        const imagenesSnoopy = [
+            "https://i.pinimg.com/originals/c9/79/11/c97911fa44754a6db24ce9bd9bc8e8bb.png",
+            "https://i.pinimg.com/originals/16/06/10/160610f639c0993d0f04c7cffbd7c20c.png",
+            "https://i.pinimg.com/originals/99/bd/69/99bd699f0bf5716df63d5ff64b150997.png",
+            "https://i.pinimg.com/originals/a3/9a/91/a39a91176b5c3e6221c4323e1082ce47.png",
+            "https://i.pinimg.com/originals/52/80/7e/52807e37e5e3474d27f3299772186591.png",
+            "https://i.pinimg.com/originals/4e/44/2c/4e442c7aa6101d293d508e6f16c1417a.png",
+            "https://i.pinimg.com/originals/31/64/7b/31647bc52923f6637e1b7891cf27520e.png",
+            "https://i.pinimg.com/originals/8a/53/78/8a5378419bf4553531cfb57a6e19192b.png",
+            "https://i.pinimg.com/originals/7c/48/4d/7c484dfd60e7e10c732924346bc68809.png",
+            "https://i.pinimg.com/originals/91/8c/20/918c207d5792d711783cf53545b74158.png"
         ];
 
         function iniciarGalaxia() {
@@ -221,6 +262,7 @@
                 const estrella = document.createElement('div');
                 estrella.classList.add('estrella');
                 
+                // Cálculo de la espiral
                 const theta = i * 0.25; 
                 const radio = 1.4 * theta; 
                 
@@ -235,7 +277,7 @@
                 estrella.style.height = size;
                 
                 estrella.dataset.message = frases[i];
-                estrella.dataset.imageIndex = (i % 10) + 1;
+                estrella.dataset.imageIndex = i % 10; // Selecciona una de las 10 imágenes en orden cíclico
                 
                 estrella.onclick = function() {
                     abrirModal(this.dataset.message, this.dataset.imageIndex);
@@ -246,8 +288,7 @@
         }
 
         function abrirModal(mensaje, indiceImagen) {
-            // Intenta cargar la imagen local correspondiente (ej. snoopy-1.jpg)
-            document.getElementById('display-image').src = `snoopy-${indiceImagen}.jpg`;
+            document.getElementById('display-image').src = imagenesSnoopy[indiceImagen];
             document.getElementById('display-message').textContent = mensaje;
             
             document.getElementById('modal').style.display = 'block';
