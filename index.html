@@ -13,7 +13,7 @@
             font-family: 'Poppins', sans-serif;
             color: #fff; display: flex; justify-content: center;
             align-items: center; overflow: hidden; 
-            -webkit-tap-highlight-color: transparent; /* Elimina el destello gris en iOS al tocar */
+            -webkit-tap-highlight-color: transparent;
         }
 
         #landing-screen {
@@ -44,14 +44,13 @@
             letter-spacing: 1px;
         }
 
-        /* Botón de corazón optimizado para móviles */
         .heart-button {
             width: 100px; height: 100px; background-color: #a4133c;
             position: relative; transform: rotate(-45deg); cursor: pointer;
             box-shadow: 0 0 35px rgba(164, 19, 60, 0.9);
             animation: heart-beat 1.5s infinite; margin-top: 40px;
-            z-index: 20; /* Asegura que esté por encima de cualquier otra capa */
-            touch-action: manipulation; /* Mejora la respuesta táctil en iOS */
+            z-index: 20;
+            touch-action: manipulation;
         }
         .heart-button::before, .heart-button::after {
             content: ''; width: 100px; height: 100px;
@@ -66,16 +65,18 @@
         }
         @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
+        /* Estrellas ajustadas: bordes pequeños para que no se amontonen */
         .estrella {
             position: absolute; border-radius: 50%; cursor: pointer; z-index: 10;
             background-color: #ff4d6d;
-            box-shadow: 0 0 6px #ff758c, 0 0 12px rgba(164, 19, 60, 0.9);
-            border: 14px solid transparent; background-clip: padding-box; 
+            box-shadow: 0 0 4px #ff758c, 0 0 8px rgba(164, 19, 60, 0.9);
+            border: 4px solid transparent; /* Reducido para evitar superposiciones gigantes */
+            background-clip: padding-box; 
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         
         .estrella:hover {
-            transform: scale(2.5);
+            transform: scale(3);
             box-shadow: 0 0 15px #ffb3c6, 0 0 25px rgba(255, 77, 109, 1);
             background-color: #ffffff;
         }
@@ -115,7 +116,6 @@
     <div id="landing-screen">
         <h1>Para mi Casi todo</h1>
         <p>Toca el corazón</p>
-        <!-- Se añade un evento explícito para dispositivos táctiles (touchstart) -->
         <div class="heart-button" onclick="iniciarGalaxia()" ontouchstart="iniciarGalaxia()"></div>
     </div>
 
@@ -270,13 +270,13 @@
                 estrella.style.left = posX + '%';
                 estrella.style.top = posY + '%';
                 
-                const size = (Math.random() * 2 + 3) + 'px';
+                // Puntos pequeños y delicados
+                const size = (Math.random() * 1.5 + 2) + 'px';
                 estrella.style.width = size;
                 estrella.style.height = size;
                 
                 estrella.dataset.message = frases[i];
                 
-                // Evento dual para asegurar compatibilidad total en iPhone y PC
                 estrella.onclick = function() { abrirModal(this.dataset.message); };
                 estrella.ontouchstart = function() { abrirModal(this.dataset.message); };
 
